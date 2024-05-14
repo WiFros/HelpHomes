@@ -9,7 +9,7 @@ import RTL from "../views/Rtl.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
-
+import DealService from "../views/DealService.vue";
 
 //qna detail
 import QnaDetail from "../views/QnaDetail.vue";
@@ -26,10 +26,16 @@ const routes = [
     component: Dashboard,
   },
   {
+    path: "/dealService",
+    name: "DealService",
+    component: DealService,
+  },
+  {
     path: "/qna",
     name: "Qna",
     component: Qna,
-  }, {
+  },
+  {
     path: "/qna/insert",
     name: "insert",
     component: QnaInsert,

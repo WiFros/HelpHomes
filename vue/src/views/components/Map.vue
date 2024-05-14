@@ -32,7 +32,7 @@ export default {
 <style scoped>
 .rounded-map {
   width: 100%;
-  height: 400px; /* 원하는 높이 값으로 조정 */
+  height: 500px; /* 원하는 높이 값으로 조정 */
   border-radius: 20px;
   overflow: hidden;
 }

@@ -9,7 +9,7 @@ export default createStore({
     isRTL: false,
     mcolor: "",
     darkMode: false,
-    isNavFixed: false,
+    isNavFixed: true,
     isAbsolute: false,
     showNavs: true,
     showSidenav: true,
