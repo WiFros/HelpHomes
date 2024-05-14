@@ -1,0 +1,11 @@
+{
+  "name": "s1114_vue_home_parkjeoungyoung_leeseungwook_shinhyejin",
+  "version": "1.0.0",
+  "description": "```\r cd vue\r npm install\r npm run dev\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
