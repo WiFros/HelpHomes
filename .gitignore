@@ -44,7 +44,6 @@ yarn-error.log
 ### Eclipse ###
 *.project
 *.classpath
-*.project
 .metadata
 bin/
 tmp/
