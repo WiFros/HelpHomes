@@ -38,7 +38,7 @@ onMounted(() => {
           </div>
           <div class="col-lg-9 map">
             <!-- <carousel /> -->
-              <Map :aptDealList="aptDealList" />
+              <Map :aptMarkerList="aptDealList" />
           </div>
         </div>
       </div>

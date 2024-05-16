@@ -6,15 +6,15 @@ import { toRaw } from "vue";
 
 export default {
   /////////////////////////////////////////////////
-  // 지도만 출력했다 aptDealList를 받아올때, 마커 출력 
+  // 지도만 출력했다 aptMarkerList를 받아올때, 마커 출력 
   props: {
-    aptDealList: {
+    aptMarkerList: {
       type: Array,
       required: true
     }
   },
   watch: {
-    aptDealList: {
+    aptMarkerList: {
       handler(newVal) {
         console.log("--- map으로 데이터 도착 ---");
         console.log("Apt Deal List Updated:", newVal);
@@ -23,7 +23,7 @@ export default {
       deep: true
     }
   },
-  // 지도만 출력했다 aptDealList를 받아올때, 마커 출력
+  // 지도만 출력했다 aptMarkerList를 받아올때, 마커 출력
   /////////////////////////////////////////////////
 
   data() {
@@ -48,7 +48,7 @@ export default {
   methods: {
     initMap() {
         console.log("--- initmap ---");
-        console.log("Apt Deal List Updated:", this.aptDealList.length);
+        console.log("Apt Deal List Updated:", this.aptMarkerList.length);
       
 
       const container = document.getElementById('map');
@@ -62,10 +62,10 @@ export default {
 
       //this.displayMarker(this.markerPositions2);
 
-      if (this.aptDealList.length != 0) {
+      if (this.aptMarkerList.length != 0) {
         console.log("아파트 존재!")
-        console.log(this.aptDealList.length)
-        const markerPositions = this.convertToLatLng(this.aptDealList);
+        console.log(this.aptMarkerList.length)
+        const markerPositions = this.convertToLatLng(this.aptMarkerList);
         this.displayMarker(markerPositions);
       }
 

@@ -1,12 +1,62 @@
 <script setup>
+// import Carousel from "./components/Carousel.vue";
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-// import Carousel from "./components/Carousel.vue";
 import Map from "./components/Map.vue";
+import { onMounted, ref } from 'vue';
+import { searchByAptCode } from '../api/aptDeal.js';
+import { useRoute } from "vue-router";
+const currentRoute = useRoute();
+const param = {
+  aptCode: ref(currentRoute.params.aptCode),
+  floor : ref(currentRoute.params.floor)
+}
+const aptDealList = ref([]);
 
-import { ref } from 'vue';
+const amountGraphX = ref([
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec',
+                  ]);
+const amountGraphY = ref([50, 40, 300, 220, 500, 250, 400, 230, 500]);
 
-const emptyList = ref([]);
+
+
+onMounted(() => {
+  searchByAptCode(param,
+    (response) => {
+      console.log(response.data);
+      console.log(response.data.length+"개의 해당매물 거래 정보를 불러왔습니다.");
+      console.log(response.data);
+      aptDealList.value = response.data;
+
+      const newGraphX = [];
+      const newGraphY = [];
+      for (let i = 0; i < aptDealList.value.length; i++){
+        
+        console.log(i+"번쨰");
+        const dealAmount = aptDealList.value[i].dealAmount.replace(',', ''); // 콤마 제거
+        const amount = parseInt(dealAmount); // 정수형으로 변환
+        newGraphX.push(aptDealList.value[i].dealYear);
+        newGraphY.push(amount);
+        
+       }
+
+       amountGraphX.value = newGraphX;
+       amountGraphY.value = newGraphY;
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+});
+
 </script>
 <template>
   <div class="py-4 container-fluid">
@@ -80,21 +130,11 @@ const emptyList = ref([]);
                 description="<i class='fa fa-arrow-up text-success'></i>
       <span class='font-weight-bold'>4% more</span> in 2021"
                 :chart="{
-                  labels: [
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec',
-                  ],
+                  labels: amountGraphX,
                   datasets: [
                     {
                       label: 'Mobile Apps',
-                      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                      data: amountGraphY,
                     },
                   ],
                 }"
@@ -104,7 +144,7 @@ const emptyList = ref([]);
           <div class="col-lg-5">
             <!-- <carousel /> -->
             <div class="card">
-              <Map :aptDealList="emptyList" />
+              <Map :aptMarkerList="aptDealList" />
             </div>
           </div>
         </div>

@@ -104,7 +104,7 @@ const emptyList = ref([]);
           <div class="col-lg-5">
             <!-- <carousel /> -->
             <div class="card">
-              <Map :aptDealList="emptyList" />
+              <Map :aptMarkerList="emptyList" />
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import Chart from "chart.js/auto";
 
 const props = defineProps({
@@ -31,7 +31,16 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
+watch(
+  () => props.chart,
+  (newChart) => {
+    draw(newChart);
+  }
+);
+
+onMounted(draw);
+
+function draw() {
   var gradientLineChart = document.getElementById(props.id).getContext("2d");
 
   var gradientStroke1 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
@@ -218,7 +227,7 @@ onMounted(() => {
       },
     });
   }
-});
+}
 </script>
 <template>
   <div class="card z-index-2">
@@ -229,11 +238,7 @@ onMounted(() => {
     </div>
     <div class="p-3 card-body">
       <div class="chart">
-        <canvas
-          :id="props.id"
-          class="chart-canvas"
-          :height="props.height"
-        ></canvas>
+        <canvas :id="props.id" class="chart-canvas" :height="props.height"></canvas>
       </div>
     </div>
   </div>
