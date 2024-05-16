@@ -27,9 +27,6 @@ onMounted(() => {
 
   <div class="py-4 container-fluid">
     
-  <DealSearchBar/>
-    <div class="row">
-      <div class="col-lg-12 py-3">
         <div class="row">
           <div class="col-lg-3 mb-lg ">
             <!-- line chart -->
@@ -37,11 +34,14 @@ onMounted(() => {
     
           </div>
           <div class="col-lg-9 map">
+            <div class="col">
+              <DealSearchBar/>
             <!-- <carousel /> -->
+          <div class="py-3">
               <Map :aptMarkerList="aptDealList" />
           </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
   </div>
 </template>
