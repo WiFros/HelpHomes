@@ -13,18 +13,8 @@ const param = {
 }
 const aptDealList = ref([]);
 
-const amountGraphX = ref([
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec',
-                  ]);
-const amountGraphY = ref([50, 40, 300, 220, 500, 250, 400, 230, 500]);
+const amountGraphX = ref([]);
+const amountGraphY = ref([]);
 
 
 
