@@ -15,9 +15,9 @@
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 아파트 이름
               </th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+              <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                 거래금액
-              </th>
+              </th> -->
               <th class="text-secondary opacity-7"></th>
             </tr>
           </thead>
@@ -28,27 +28,28 @@
         <div class = "scrollable-content">
         <table class=" table align-items-center mb-0">
           <tbody>
-            <tr v-for="qna in qnaList" :key="qna.num">
+            <tr v-for="aptDeal in aptDealList" :key="aptDeal.aptCode">
               <td>
                 <div class="d-flex px-2 py-1">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">
                       <RouterLink :to="{
                         name: 'QnaDetail',
-                        params: { num: qna.num }
-                      }">{{ qna.title }}
+                        params: { num: 3 }
+                      }">
+                    {{ aptDeal.aptName }}
                       </RouterLink>
                     </h6>
                     <p class="text-xs text-secondary mb-0">
-                      {{ qna.email }}
+                      {{ aptDeal.dealAmount }} 억
                     </p>
                   </div>
                 </div>
               </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">{{ qna.writer }}</p>
-                <p class="text-xs text-secondary mb-0">{{ qna.region }}</p>
-              </td>
+              <!-- <td>
+                <p class="text-xs font-weight-bold mb-0">{{ aptDeal.writer }}</p>
+                <p class="text-xs text-secondary mb-0">{{ aptDeal.region }}</p>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -59,24 +60,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { selectAll } from '../../api/qna.js';
 import { RouterLink } from 'vue-router';
+import { defineProps } from 'vue';
 
-const qnaList = ref([]);
+defineProps({
+  aptDealList: Array
+})
 
 
-onMounted(() => {
-  selectAll(
-    (response) => {
-      console.log(response.data);
-      qnaList.value = response.data;
-    },
-    (error) => {
-      console.error(error);
-    }
-  );
-});
 
 </script>
 

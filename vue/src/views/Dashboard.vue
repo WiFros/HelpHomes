@@ -4,6 +4,9 @@ import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
 // import Carousel from "./components/Carousel.vue";
 import Map from "./components/Map.vue";
 
+import { ref } from 'vue';
+
+const emptyList = ref([]);
 </script>
 <template>
   <div class="py-4 container-fluid">
@@ -101,7 +104,7 @@ import Map from "./components/Map.vue";
           <div class="col-lg-5">
             <!-- <carousel /> -->
             <div class="card">
-              <Map />
+              <Map :aptDealList="emptyList" />
             </div>
           </div>
         </div>
