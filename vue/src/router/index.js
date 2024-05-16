@@ -14,6 +14,11 @@ import DealService from "../views/DealService.vue";
 //qna detail
 import QnaDetail from "../views/QnaDetail.vue";
 // qna detail
+
+//deal detail
+import DealDetail from "../views/DealDetail.vue";
+// deal detail
+
 const routes = [
   {
     path: "/",
@@ -74,6 +79,11 @@ const routes = [
     path: "/qnaDetail/:num",
     name: "QnaDetail",
     component: QnaDetail,
+  },
+  {
+    path: "/dealDetail/:aptCode/:floor",
+    name: "DealDetail",
+    component: DealDetail,
   },
 ];
 

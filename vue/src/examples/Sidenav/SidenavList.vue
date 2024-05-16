@@ -45,6 +45,19 @@ const getRoute = () => {
         </sidenav-item>
       </li>
 
+
+      <li class="nav-item">
+        <sidenav-item
+          to="/DealDetail"
+          :class="getRoute() === 'signup' ? 'active' : ''"
+          :navText="isRTL ? 'اشتراك' : '아파트검색'"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-collection text-info text-sm opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+
       <li class="nav-item">
         <sidenav-item
           to="/qna"
