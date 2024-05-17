@@ -1,35 +1,7 @@
-image: maven:latest
-
-stages:          
-  - build
+stages:
   - test
-  - package
-  - deploy
 
-build-job:       
-  stage: build
-  script:
-    - "cd cicd/cicd"
-    - echo "Compiling the code..."
-    - "mvn compile"
-    - echo "Compile complete."
-
-test-job:   
+echo:
   stage: test
   script:
-    - "cd cicd/cicd"
-    - echo "Running unit tests.."
-    - "mvn test"
-
-package-job:   
-  stage: test   
-  script:
-    - "cd cicd/cicd"
-    - echo "Package the code"
-    - "mvn package"
-
-deploy-job:      
-  stage: deploy  
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - echo "Hello, GitLab CI/CD!"
