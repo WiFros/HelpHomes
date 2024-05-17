@@ -1,7 +1,8 @@
 stages:
   - test
-
+  - bulid
 echo:
   stage: test
   script:
     - echo "Hello, GitLab CI/CD!"
+
