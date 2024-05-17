@@ -11,6 +11,7 @@ build:
     - export PATH=$JAVA_HOME/bin:$PATH
     - echo "JAVA_HOME is set to $JAVA_HOME"
     - echo "PATH is set to $PATH"
+    - mvn -version
     - cd spring
     - mvn clean package
     - docker build -t my-springboot-app .
