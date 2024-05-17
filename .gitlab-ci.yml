@@ -4,7 +4,7 @@ stages:
 
 build:
   stage: build
-  image: maven:3.8.4-openjdk-11
+  image: maven:4.0.0-openjdk-17
   script:
     - cd spring
     - mvn clean package
