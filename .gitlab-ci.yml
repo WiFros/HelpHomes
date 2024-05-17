@@ -1,8 +1,24 @@
 stages:
-  - test
-  - bulid
-echo:
-  stage: test
-  script:
-    - echo "Hello, GitLab CI/CD!"
+  - build
+  - deploy
 
+build:
+  stage: build
+  image: openjdk:11-jdk
+  script:
+    - cd spring
+    - ./gradlew clean build
+    - docker build -t my-springboot-app .
+  only:
+    changes:
+      - spring/**/*
+
+deploy:
+  stage: deploy
+  script:
+    - docker stop my-springboot-app || true
+    - docker rm my-springboot-app || true
+    - docker run -d --name my-springboot-app -p 80:80 my-springboot-app
+  only:
+    changes:
+      - spring/**/*
