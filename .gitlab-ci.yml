@@ -1,39 +1,19 @@
 stages:
   - build
   - deploy
-  - test
-test-job:
-  stage: test
-  script:
-    - echo "Hello, GitLab Runner!"
-    - echo "This is a test job."
-    - echo "List files:"
-    - ls -al
 
-build-spring:
+build:
   stage: build
-  image: maven:3.8.4-openjdk-17
   script:
-    - cd spring
-    - mvn clean package
+    - ./gradlew clean build
   artifacts:
     paths:
-      - spring/target/*.jar
-  only:
-    changes:
-      - spring/**/*
+      - build/libs/*.jar
 
-deploy-spring:
+deploy:
   stage: deploy
   script:
-    - cd spring
-    - docker build -t $DOCKER_HUB_USERNAME/$IMAGE_NAME .
-    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker push $DOCKER_HUB_USERNAME/$IMAGE_NAME
-    - docker stop $CONTAINER_NAME || true
-    - docker rm $CONTAINER_NAME || true
-    - docker pull $DOCKER_HUB_USERNAME/$IMAGE_NAME
-    - docker run -d --name $CONTAINER_NAME -p $HOST_PORT:$CONTAINER_PORT $DOCKER_HUB_USERNAME/$IMAGE_NAME
+    - chmod +x ./deploy.sh
+    - ./deploy.sh
   only:
-    changes:
-      - spring/**/*
+    - main
