@@ -13,6 +13,7 @@ before_script:
   - docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
 
 build:
+  image: wifros/my_docker
   stage: build
   script:
     - cd spring
