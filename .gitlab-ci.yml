@@ -1,6 +1,15 @@
 stages:
   - build
   - deploy
+  - test
+test-job:
+  stage: test
+  script:
+    - echo "Hello, GitLab Runner!"
+    - echo "This is a test job."
+    - echo "Current directory: $(pwd)"
+    - echo "List files:"
+    - ls -al
 
 build-spring:
   stage: build
