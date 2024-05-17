@@ -1,31 +1,26 @@
 stages:
   - build
+  - test
   - deploy
+
 variables:
-  JAVA_HOME: "/usr/lib/jvm/java-17-openjdk-17.0.10.0.7-2.el9.x86_64"
+  DOCKER_REGISTRY: "docker.io"
+  DOCKER_IMAGE: "$DOCKER_REGISTRY/wifros/my_docker"
+  DOCKER_TAG: "$CI_COMMIT_SHA"
+  DOCKER_LATEST_TAG: "latest"
+
+before_script:
+  - docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
+
 build:
   stage: build
-  image: maven:3.8.4-openjdk-17
   script:
-    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.10.0.7-2.el9.x86_64
-    - export PATH=$JAVA_HOME/bin:$PATH
-    - echo "JAVA_HOME is set to $JAVA_HOME"
-    - echo "PATH is set to $PATH"
-    - mvn -version
-    - mvn clean install -U
-    - cd spring
-    - mvn clean package
-    - docker build -t my-springboot-app .
-  only:
-    changes:
-      - spring/**/*
+    - docker build --platform linux/amd64 -t $DOCKER_IMAGE:$DOCKER_TAG .
+    - docker push $DOCKER_IMAGE:$DOCKER_TAG
+    - docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$DOCKER_LATEST_TAG
+    - docker push $DOCKER_IMAGE:$DOCKER_LATEST_TAG
 
-deploy:
-  stage: deploy
+test:
+  stage: test
   script:
-    - docker stop my-springboot-app || true
-    - docker rm my-springboot-app || true
-    - docker run -d --name my-springboot-app -p 80:80 my-springboot-app
-  only:
-    changes:
-      - spring/**/*
+    - docker run --rm $DOCKER_IMAGE:$DOCKER_LATEST_TAG ./run-tests.sh
