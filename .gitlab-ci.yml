@@ -4,10 +4,10 @@ stages:
 
 build:
   stage: build
-  image: openjdk:11-jdk
+  image: maven:3.8.4-openjdk-17
   script:
     - cd spring
-    - ./gradlew clean build
+    - mvn clean package
     - docker build -t my-springboot-app .
   only:
     changes:
