@@ -17,14 +17,15 @@ build-spring:
 
 deploy-spring:
   stage: deploy
-  image: docker:latest
-  services:
-    - docker:dind
   script:
     - cd spring
-    - docker build -t $DOCKER_HUB_USERNAME/my_docker:spring .
+    - docker build -t $DOCKER_HUB_USERNAME/$IMAGE_NAME .
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker push $DOCKER_HUB_USERNAME/my_docker:spring
+    - docker push $DOCKER_HUB_USERNAME/$IMAGE_NAME
+    - docker stop $CONTAINER_NAME || true
+    - docker rm $CONTAINER_NAME || true
+    - docker pull $DOCKER_HUB_USERNAME/$IMAGE_NAME
+    - docker run -d --name $CONTAINER_NAME -p $HOST_PORT:$CONTAINER_PORT $DOCKER_HUB_USERNAME/$IMAGE_NAME
   only:
     changes:
       - spring/**/*
