@@ -7,7 +7,6 @@ test-job:
   script:
     - echo "Hello, GitLab Runner!"
     - echo "This is a test job."
-    - echo "Current directory: $(pwd)"
     - echo "List files:"
     - ls -al
 
