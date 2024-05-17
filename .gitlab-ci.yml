@@ -1,23 +1,29 @@
-build-job:
+stages:
+  - build
+  - deploy
+
+build-spring:
   stage: build
+  image: maven:3.8.4-openjdk-17
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - cd spring
+    - mvn clean package
+  artifacts:
+    paths:
+      - spring/target/*.jar
+  only:
+    changes:
+      - spring/**/*
 
-test-job1:
-  stage: test
-  script:
-    - echo "This job tests something"
-
-test-job2:
-  stage: test
-  script:
-    - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 20
-
-deploy-prod:
+deploy-spring:
   stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-  environment: production
+    - cd spring
+    - docker build -t your-spring-image .
+    - docker push your-spring-image
+  only:
+    changes:
+      - spring/**/*
