@@ -22,9 +22,9 @@ deploy-spring:
     - docker:dind
   script:
     - cd spring
-    - docker build -t your-docker-hub-username/your-spring-image .
-    - docker login -u your-docker-hub-username -p your-docker-hub-password
-    - docker push your-docker-hub-username/your-spring-image
+    - docker build -t $DOCKER_HUB_USERNAME/my_docker:spring .
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker push $DOCKER_HUB_USERNAME/my_docker:spring
   only:
     changes:
       - spring/**/*
