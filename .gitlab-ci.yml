@@ -1,4 +1,14 @@
-image: eclipse-temurin:17
+image: docker:latest
+
+services:
+  - docker:dind
+  - mariadb:latest
+
+variables:
+  MYSQL_DATABASE: ssafyweb
+  MYSQL_USER: scott
+  MYSQL_PASSWORD: tiger
+  MYSQL_ROOT_PASSWORD: ssafy
 
 stages:
   - build
@@ -23,7 +33,7 @@ run:
   stage: run
   script:
     - cd spring/target
-    - java -jar *.jar
+    - java -jar *.jar --spring.datasource.url=jdbc:mariadb://mariadb:3306/$MYSQL_DATABASE --spring.datasource.username=$MYSQL_USER --spring.datasource.password=$MYSQL_PASSWORD
   only:
     changes:
       - spring/**/*
