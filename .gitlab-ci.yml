@@ -45,7 +45,14 @@ run:
   stage: run
   script:
     - cd spring/target
+    - if [ -f app.pid ]; then
+        echo "Stopping previous instance..."
+        kill $(cat app.pid) || true
+        rm app.pid
+      fi
+    - echo "Starting new instance..."
     - java -jar *.jar --spring.datasource.url=jdbc:mariadb://mariadb:3306/$MYSQL_DATABASE --spring.datasource.username=$MYSQL_USER --spring.datasource.password=$MYSQL_PASSWORD
+    - echo $! > app.pid
   only:
     changes:
       - spring/**/*
