@@ -30,7 +30,7 @@ build:
   script:
     - cd spring
     - chmod +x mvnw
-    - export MAVEN_OPTS="-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+    #- export MAVEN_OPTS="-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
     - ./mvnw clean package
   artifacts:
     paths:
