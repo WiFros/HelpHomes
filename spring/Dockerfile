@@ -1,14 +1,8 @@
-FROM eclipse-temurin:17
+# 기본 이미지
+FROM eclipse-temurin:17-jdk
 
-RUN apt-get update && \
-    apt-get install -y wget && \
-    wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz && \
-    tar -xvf apache-maven-3.9.6-bin.tar.gz && \
-    mv apache-maven-3.9.6 /opt/apache-maven-3.9.6 && \
-    rm apache-maven-3.9.6-bin.tar.gz && \
-    ln -s /opt/apache-maven-3.9.6/bin/mvn /usr/local/bin/mvn
+# 애플리케이션 파일 복사
+COPY ./target/myapplication-0.0.1-SNAPSHOT.jar /app.jar
 
-WORKDIR /app
-COPY . /app
-
-CMD ["mvn", "clean", "package"]
+# 실행할 커맨드
+ENTRYPOINT ["java", "-jar", "/app.jar"]
