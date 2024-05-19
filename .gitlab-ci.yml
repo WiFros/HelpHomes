@@ -11,20 +11,8 @@ variables:
   MYSQL_ROOT_PASSWORD: ssafy
 
 stages:
-#  - test
   - build
   - run
-
-#
-#test_mariadb_connection:
-#  stage: test
-#  image: mariadb
-#  script:
-#    #- apt-get update && apt-get install -y default-mysql-client
-#    - mysql --host=WiFros.iptime.org --port=3306 --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE -e #"SELECT 1"
-#  only:
-#    changes:
-#      - spring/**/*
 
 build:
   stage: build
@@ -43,16 +31,12 @@ build:
 
 run:
   stage: run
+  before_script:
+    - docker ps -q | xargs -r docker stop # Stop all running containers
   script:
     - cd spring/target
-    - if [ -f app.pid ]; then
-        echo "Stopping previous instance..."
-        kill $(cat app.pid) || true
-        rm app.pid
-      fi
     - echo "Starting new instance..."
     - java -jar *.jar --spring.datasource.url=jdbc:mariadb://mariadb:3306/$MYSQL_DATABASE --spring.datasource.username=$MYSQL_USER --spring.datasource.password=$MYSQL_PASSWORD
-    - echo $! > app.pid
   only:
     changes:
       - spring/**/*
