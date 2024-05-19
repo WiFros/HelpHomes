@@ -1,27 +1,42 @@
-image: docker:latest
+image: eclipse-temurin:17
 
 services:
   - docker:dind
+  - mariadb:latest
 
 variables:
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_TLS_CERTDIR: ""
+  MYSQL_DATABASE: ssafyweb
+  MYSQL_USER: scott
+  MYSQL_PASSWORD: tiger
+  MYSQL_ROOT_PASSWORD: ssafy
 
 stages:
   - build
-  - deploy
+  - run
 
 build:
   stage: build
   script:
     - cd spring
-    - docker build -t my-spring-app .
+    - chmod +x mvnw
+    - export MAVEN_OPTS="-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+    - ./mvnw clean package
   artifacts:
     paths:
-      - target/*.jar
+      - spring/target/*.jar
     expire_in: 1 week
+  only:
+    changes:
+      - spring/**/*
 
-deploy:
-  stage: deploy
+run:
+  stage: run
+  before_script:
+    - docker ps -q | xargs -r docker stop # Stop all running containers
   script:
-    - docker run -d -p 8080:8080 my-spring-app
+    - cd spring/target
+    - echo "Starting new instance..."
+    - java -jar *.jar --spring.datasource.url=jdbc:mariadb://mariadb:3306/$MYSQL_DATABASE --spring.datasource.username=$MYSQL_USER --spring.datasource.password=$MYSQL_PASSWORD
+  only:
+    changes:
+      - spring/**/*
