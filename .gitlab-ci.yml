@@ -19,7 +19,7 @@ test_mariadb_connection:
   stage: test
   image: mariadb
   script:
-    - apt-get update && apt-get install -y default-mysql-client
+    #- apt-get update && apt-get install -y default-mysql-client
     - mysql --host=WiFros.iptime.org --port=3306 --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE -e "SELECT 1"
   only:
     changes:
