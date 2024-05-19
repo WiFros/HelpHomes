@@ -11,7 +11,7 @@ variables:
   MYSQL_ROOT_PASSWORD: ssafy
 
 stages:
-  #- test
+  - test
   - build
   - run
 
