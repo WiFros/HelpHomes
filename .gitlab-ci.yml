@@ -2,6 +2,7 @@ image: eclipse-temurin:17
 
 stages:
   - build
+  - run
 
 build:
   stage: build
@@ -14,6 +15,15 @@ build:
     paths:
       - spring/target/*.jar
     expire_in: 1 week
+  only:
+    changes:
+      - spring/**/*
+
+run:
+  stage: run
+  script:
+    - cd spring/target
+    - java -jar *.jar
   only:
     changes:
       - spring/**/*
