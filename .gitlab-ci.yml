@@ -4,12 +4,6 @@ services:
   - docker:dind
   - mariadb:latest
 
-variables:
-  MYSQL_DATABASE: ssafyweb
-  MYSQL_USER: scott
-  MYSQL_PASSWORD: tiger
-  MYSQL_ROOT_PASSWORD: ssafy
-
 stages:
   - build
   - run
@@ -31,12 +25,10 @@ build:
 
 run:
   stage: run
-  before_script:
-    - docker ps -q | xargs -r docker stop # Stop all running containers
   script:
     - cd spring/target
     - echo "Starting new instance..."
-    - java -jar *.jar --spring.datasource.url=jdbc:mariadb://mariadb:3306/$MYSQL_DATABASE --spring.datasource.username=$MYSQL_USER --spring.datasource.password=$MYSQL_PASSWORD
+    - java -jar *.jar
   only:
     changes:
       - spring/**/*
