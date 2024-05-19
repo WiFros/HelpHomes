@@ -6,9 +6,13 @@ stages:
 build:
   stage: build
   script:
+    - cd spring
     - export MAVEN_OPTS="-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
     - ./mvnw clean package
   artifacts:
     paths:
-      - target/*.jar
+      - spring/target/*.jar
     expire_in: 1 week
+  only:
+    changes:
+      - spring/**/*
