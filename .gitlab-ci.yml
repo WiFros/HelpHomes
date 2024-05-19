@@ -1,19 +1,14 @@
-variables:
-  MAVEN_OPTS: -Dmaven.repo.local=/cache/.m2
-
-default:
-  image: maven:3.9.6-jdk-17
+image: eclipse-temurin:17
 
 stages:
   - build
-  - test
 
-Build:
+build:
   stage: build
   script:
-    - mvn install -DskipTests
-
-Test:
-  stage: test
-  script:
-    - mvn test
+    - export MAVEN_OPTS="-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+    - ./mvnw clean package
+  artifacts:
+    paths:
+      - target/*.jar
+    expire_in: 1 week
