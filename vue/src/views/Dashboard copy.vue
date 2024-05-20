@@ -1,54 +1,12 @@
 <script setup>
-// import Carousel from "./components/Carousel.vue";
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
+// import Carousel from "./components/Carousel.vue";
 import Map from "./components/Map.vue";
-import { onMounted, ref } from 'vue';
-import { searchByAptCode } from '../api/aptDeal.js';
-import { useRoute } from "vue-router";
-const currentRoute = useRoute();
-const param = {
-  aptCode: ref(currentRoute.params.aptCode),
-  floor : ref(currentRoute.params.floor)
-}
-const aptDealList = ref([]);
 
-const amountGraphX = ref([]);
-const amountGraphY = ref([]);
+import { ref } from 'vue';
 
-
-
-onMounted(() => {
-  searchByAptCode(param,
-    (response) => {
-      console.log(response.data);
-      console.log(response.data.length+"개의 해당매물 거래 정보를 불러왔습니다.");
-      console.log(response.data);
-      aptDealList.value = response.data;
-
-      const newGraphX = [];
-      const newGraphY = [];
-
-      for (let i = 0; i < aptDealList.value.length; i++){
-
-        const dealDate = aptDealList.value[i].dealYear+'.' + aptDealList.value[i].dealMonth + '.' + aptDealList.value[i].dealDay;
-        newGraphX.push(dealDate );
-        
-        const dealAmount = aptDealList.value[i].dealAmount.replace(',', ''); // 콤마 제거
-        const amount = parseInt(dealAmount); // 정수형으로 변환
-        newGraphY.push(amount);
-        
-       }
-
-       amountGraphX.value = newGraphX;
-       amountGraphY.value = newGraphY;
-    },
-    (error) => {
-      console.error(error);
-    }
-  );
-});
-
+const emptyList = ref([]);
 </script>
 <template>
   <div class="py-4 container-fluid">
@@ -57,7 +15,7 @@ onMounted(() => {
         <div class="row">
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="정왕동 매물 평균가"
+              title="금일 평균가"
               value="53,000만원"
               description="<span
                 class='text-sm font-weight-bolder text-success'
@@ -71,7 +29,7 @@ onMounted(() => {
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="거래량"
+              title="신규 매물"
               value="2,300"
               description="<span
                 class='text-sm font-weight-bolder text-success'
@@ -85,7 +43,7 @@ onMounted(() => {
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="정왕동 매물 최고가"
+              title="신규 사용자"
               value="+3,462"
               description="<span
                 class='text-sm font-weight-bolder text-danger'
@@ -99,7 +57,7 @@ onMounted(() => {
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="정왕동 매물 최저가"
+              title="최저가"
               value="$103,430"
               description="<span
                 class='text-sm font-weight-bolder text-success'
@@ -122,11 +80,21 @@ onMounted(() => {
                 description="<i class='fa fa-arrow-up text-success'></i>
       <span class='font-weight-bold'>4% more</span> in 2021"
                 :chart="{
-                  labels: amountGraphX,
+                  labels: [
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec',
+                  ],
                   datasets: [
                     {
                       label: 'Mobile Apps',
-                      data: amountGraphY,
+                      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
                     },
                   ],
                 }"
@@ -136,7 +104,7 @@ onMounted(() => {
           <div class="col-lg-5">
             <!-- <carousel /> -->
             <div class="card">
-              <Map :aptMarkerList="aptDealList" />
+              <Map :aptMarkerList="emptyList" />
             </div>
           </div>
         </div>

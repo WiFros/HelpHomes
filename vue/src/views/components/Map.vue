@@ -77,6 +77,7 @@ export default {
         aptDeal.lng,
       ]);
     },
+    
     displayMarker(markerPositions) {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));

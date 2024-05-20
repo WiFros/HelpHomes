@@ -7,7 +7,7 @@ import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 
 // login 용 import
-import {login} from "../api/user.js"
+import {login} from "../api/user.js";
 
 const name = ref("");
 const password = ref("");
