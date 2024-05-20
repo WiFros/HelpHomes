@@ -16,7 +16,10 @@ const aptDealList = ref([]);
 const amountGraphX = ref([]);
 const amountGraphY = ref([]);
 
-
+const amountMax = ref(0);
+const amountMin = ref(0);
+const amountAvg = ref(0);
+const dealCount = ref(0);
 
 onMounted(() => {
   searchByAptCode(param,
@@ -29,16 +32,31 @@ onMounted(() => {
       const newGraphX = [];
       const newGraphY = [];
 
+      let max = 0;
+      let min = 10000000000;
+
       for (let i = 0; i < aptDealList.value.length; i++){
 
+        // 그래프의 x축인 날짜와 y축인 가격을 저장
         const dealDate = aptDealList.value[i].dealYear+'.' + aptDealList.value[i].dealMonth + '.' + aptDealList.value[i].dealDay;
         newGraphX.push(dealDate );
         
         const dealAmount = aptDealList.value[i].dealAmount.replace(',', ''); // 콤마 제거
         const amount = parseInt(dealAmount); // 정수형으로 변환
         newGraphY.push(amount);
+
+        // 최댓값,최솟값,평균가를 구하기 위한 코드
+        max = Math.max(max, amount);
+        min = Math.min(min, amount);
+        amountAvg.value += amount;
         
        }
+       amountAvg.value = amountAvg.value / aptDealList.value.length;
+       amountMax.value = max;
+       amountMin.value = min;
+       dealCount.value = aptDealList.value.length;
+
+      amountToBillion();
 
        amountGraphX.value = newGraphX;
        amountGraphY.value = newGraphY;
@@ -49,6 +67,12 @@ onMounted(() => {
   );
 });
 
+function amountToBillion(){
+  amountMax.value = amountMax.value / 1000;
+  amountMin.value = amountMin.value / 1000;
+  amountAvg.value = amountAvg.value / 1000;
+}
+
 </script>
 <template>
   <div class="py-4 container-fluid">
@@ -57,8 +81,8 @@ onMounted(() => {
         <div class="row">
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="정왕동 매물 평균가"
-              value="53,000만원"
+              title="매물 평균가"
+              :value="amountAvg.toFixed(2) + '억'"
               description="<span
                 class='text-sm font-weight-bolder text-success'
                 >+55%</span> 전일 대비"
@@ -72,7 +96,7 @@ onMounted(() => {
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
               title="거래량"
-              value="2,300"
+              :value="dealCount"
               description="<span
                 class='text-sm font-weight-bolder text-success'
                 >+3%</span> 전주 대비"
@@ -85,8 +109,8 @@ onMounted(() => {
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="정왕동 매물 최고가"
-              value="+3,462"
+              title="매물 최고가"
+              :value="amountMax.toFixed(2) + '억'"
               description="<span
                 class='text-sm font-weight-bolder text-danger'
                 >-2%</span> 이전 분기 대비"
@@ -99,8 +123,8 @@ onMounted(() => {
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="정왕동 매물 최저가"
-              value="$103,430"
+              title="매물 최저가"
+              :value="amountMin.toFixed(2) + '억'"
               description="<span
                 class='text-sm font-weight-bolder text-success'
                 >+5%</span> 전월 대비"
