@@ -40,6 +40,10 @@ public class UserServiceImpl implements UserService {
 		return mapper.findByName(name);
 	}
 	
+	@Override
+	public User findByEmail(String email) throws SQLException {
+		return mapper.findByEmail(email);
+	}
 	// ================ ADMIN ================
 	
 	@Override

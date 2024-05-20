@@ -19,5 +19,5 @@ public interface UserMapper {
 	User findByName(String name) throws SQLException;
 	List<User> findAll() throws SQLException;
 	int delete(Integer id) throws SQLException;
-	
+	User findByEmail(String email) throws SQLException;
 }
