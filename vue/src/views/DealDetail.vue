@@ -28,6 +28,7 @@ onMounted(() => {
 
       const newGraphX = [];
       const newGraphY = [];
+
       for (let i = 0; i < aptDealList.value.length; i++){
 
         const dealDate = aptDealList.value[i].dealYear+'.' + aptDealList.value[i].dealMonth + '.' + aptDealList.value[i].dealDay;
@@ -36,8 +37,6 @@ onMounted(() => {
         const dealAmount = aptDealList.value[i].dealAmount.replace(',', ''); // 콤마 제거
         const amount = parseInt(dealAmount); // 정수형으로 변환
         newGraphY.push(amount);
-
-
         
        }
 
@@ -58,7 +57,7 @@ onMounted(() => {
         <div class="row">
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="매물 평균가"
+              title="정왕동 매물 평균가"
               value="53,000만원"
               description="<span
                 class='text-sm font-weight-bolder text-success'
@@ -86,7 +85,7 @@ onMounted(() => {
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="최고가"
+              title="정왕동 매물 최고가"
               value="+3,462"
               description="<span
                 class='text-sm font-weight-bolder text-danger'
@@ -100,7 +99,7 @@ onMounted(() => {
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="최저가"
+              title="정왕동 매물 최저가"
               value="$103,430"
               description="<span
                 class='text-sm font-weight-bolder text-success'
