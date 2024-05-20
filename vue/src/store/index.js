@@ -17,6 +17,7 @@ export default createStore({
     showFooter: true,
     showMain: true,
     layout: "default",
+    token: localStorage.getItem('token') || '' // 추가된 상태
   },
   mutations: {
     toggleConfigurator(state) {
@@ -38,17 +39,29 @@ export default createStore({
       state.sidebarType = payload;
     },
     navbarFixed(state) {
-      if (state.isNavFixed === false) {
-        state.isNavFixed = true;
-      } else {
-        state.isNavFixed = false;
-      }
+      state.isNavFixed = !state.isNavFixed;
     },
+    setToken(state, token) { // 추가된 뮤테이션
+      state.token = token;
+      localStorage.setItem('token', token);
+    },
+    clearToken(state) { // 추가된 뮤테이션
+      state.token = '';
+      localStorage.removeItem('token');
+    }
   },
   actions: {
     toggleSidebarColor({ commit }, payload) {
       commit("sidebarType", payload);
     },
+    login({ commit }, token) { // 추가된 액션
+      commit('setToken', token);
+    },
+    logout({ commit }) { // 추가된 액션
+      commit('clearToken');
+    }
   },
-  getters: {},
+  getters: {
+    isAuthenticated: state => !!state.token // 추가된 게터
+  }
 });

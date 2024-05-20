@@ -1,51 +1,3 @@
-<script setup>
-import { onBeforeUnmount, onBeforeMount,ref } from "vue";
-import { useStore } from "vuex";
-import Navbar from "@/examples/PageLayout/Navbar.vue";
-import ArgonInput from "@/components/ArgonInput.vue";
-import ArgonSwitch from "@/components/ArgonSwitch.vue";
-import ArgonButton from "@/components/ArgonButton.vue";
-
-// login 용 import
-import {login} from "../api/user.js";
-
-const name = ref("");
-const password = ref("");
-
-function loginProcess(){
-  const login_user = {
-    name : name.value,
-    password : password.value
-  }
-  login(login_user,response=>{
-    console.log(response.data);
-  },error=>{
-    console.log(error);
-  })
-}
-// login 용 코드
-
-const body = document.getElementsByTagName("body")[0];
-
-const store = useStore();
-onBeforeMount(() => {
-  store.state.hideConfigButton = true;
-  store.state.showNavbar = false;
-  store.state.showSidenav = false;
-  store.state.showFooter = false;
-  body.classList.remove("bg-gray-100");
-});
-
-onBeforeUnmount(() => {
-  store.state.hideConfigButton = false;
-  store.state.showNavbar = true;
-  store.state.showSidenav = true;
-  store.state.showFooter = true;
-  body.classList.add("bg-gray-100");
-});
-
-
-</script>
 <template>
   <div class="container top-0 position-sticky z-index-sticky">
     <div class="row">
@@ -63,60 +15,51 @@ onBeforeUnmount(() => {
       <div class="page-header min-vh-100">
         <div class="container">
           <div class="row">
-            <div
-              class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0"
-            >
+            <div class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0">
               <div class="card card-plain">
                 <div class="pb-0 card-header text-start">
                   <h4 class="font-weight-bolder">Sign In</h4>
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                      <argon-input
-                        id="name"
-                        type="name"
-                        placeholder="Name"
-                        name="name"
-                        size="lg"
-                        v-model="name"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <argon-input
-                        id="password"
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        size="lg"
-                        v-model="password"
-                      />
-	
-                    </div>
-                    <argon-switch id="rememberMe" name="remember-me"
-                      >Remember me</argon-switch
+                  <div class="mb-3">
+                    <argon-input
+                      id="email"
+                      type="email"
+                      placeholder="Email"
+                      name="email"
+                      size="lg"
+                      v-model="email"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <argon-input
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                      size="lg"
+                      v-model="password"
+                    />
+                  </div>
+                  <argon-switch id="rememberMe" name="remember-me">Remember me</argon-switch>
+                  <div class="text-center">
+                    <argon-button
+                      class="mt-4"
+                      variant="gradient"
+                      color="success"
+                      fullWidth
+                      size="lg"
+                      @click="loginProcess"
                     >
-
-                    <div class="text-center">
-                      <argon-button
-                        class="mt-4"
-                        variant="gradient"
-                        color="success"
-                        fullWidth
-                        size="lg"
-                        @click="loginProcess()"
-                        >Sign in</argon-button
-                      >
-                    </div>
+                      Sign in
+                    </argon-button>
+                  </div>
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     Don't have an account?
-                    <a
-                      href="javascript:;"
-                      class="text-success text-gradient font-weight-bold"
-                      >Sign up</a
-                    >
+                    <a href="javascript:;" class="text-success text-gradient font-weight-bold">Sign up</a>
                   </p>
                 </div>
               </div>
@@ -132,14 +75,11 @@ onBeforeUnmount(() => {
                 "
               >
                 <span class="mask bg-gradient-success opacity-6"></span>
-                <h4
-                  class="mt-5 text-white font-weight-bolder position-relative"
-                >
+                <h4 class="mt-5 text-white font-weight-bolder position-relative">
                   "Attention is the new currency"
                 </h4>
                 <p class="text-white position-relative">
-                  The more effortless the writing looks, the more effort the
-                  writer actually put into the process.
+                  The more effortless the writing looks, the more effort the writer actually put into the process.
                 </p>
               </div>
             </div>
@@ -149,3 +89,76 @@ onBeforeUnmount(() => {
     </section>
   </main>
 </template>
+
+<script setup>
+import { ref, onBeforeMount, onBeforeUnmount } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import Navbar from "@/examples/PageLayout/Navbar.vue";
+import ArgonInput from "@/components/ArgonInput.vue";
+import ArgonSwitch from "@/components/ArgonSwitch.vue";
+import ArgonButton from "@/components/ArgonButton.vue";
+
+// login 용 import
+import { login } from "../api/user.js";
+
+const email = ref("");
+const password = ref("");
+
+const store = useStore();
+const router = useRouter();
+
+function loginProcess() {
+  const login_user = {
+    email: email.value,
+    password: password.value
+  };
+  console.log('Login attempt with:', login_user);  // 로그인 시도 로그 출력
+
+  login(
+    login_user,
+    response => {
+      console.log('Login response:', response.data);  // 로그인 응답 로그 출력
+
+      // 응답 데이터가 직접 토큰인 경우
+      const token = response.data;
+      if (token) {
+        localStorage.setItem('token', token);  // 토큰 저장 로그
+        console.log('Token stored in localStorage:', token);  // 저장된 토큰 로그 출력
+
+        store.dispatch('login', token);
+        router.push('/dashboard-default');  // 로그인 후 이동
+      } else {
+        console.error('Invalid token received from server');
+      }
+    },
+    error => {
+      console.error('Login error:', error);  // 로그인 에러 로그 출력
+    }
+  );
+}
+
+
+
+
+
+
+
+const body = document.getElementsByTagName("body")[0];
+
+onBeforeMount(() => {
+  store.state.hideConfigButton = true;
+  store.state.showNavbar = false;
+  store.state.showSidenav = false;
+  store.state.showFooter = false;
+  body.classList.remove("bg-gray-100");
+});
+
+onBeforeUnmount(() => {
+  store.state.hideConfigButton = false;
+  store.state.showNavbar = true;
+  store.state.showSidenav = true;
+  store.state.showFooter = true;
+  body.classList.add("bg-gray-100");
+});
+</script>
