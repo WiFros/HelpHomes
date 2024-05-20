@@ -1,23 +1,34 @@
-build-job:
+image: eclipse-temurin:17
+
+services:
+  - docker:dind
+  - mariadb:latest
+
+stages:
+  - build
+  - run
+
+build:
   stage: build
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - cd spring
+    - chmod +x mvnw
+    - export MAVEN_OPTS="-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+    - ./mvnw clean package
+  artifacts:
+    paths:
+      - spring/target/*.jar
+    expire_in: 1 week
+  only:
+    changes:
+      - spring/**/*
 
-test-job1:
-  stage: test
+run:
+  stage: run
   script:
-    - echo "This job tests something"
-
-test-job2:
-  stage: test
-  script:
-    - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 20
-
-deploy-prod:
-  stage: deploy
-  script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-  environment: production
+    - cd spring/target
+    - echo "Starting new instance..."
+    - java -jar *.jar
+  only:
+    changes:
+      - spring/**/*
