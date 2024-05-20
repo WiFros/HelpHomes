@@ -19,9 +19,11 @@
 	</select>
 	
 	<insert id="register" parameterType="User">
-		insert into users values (null, #{name}, #{password}, #{email}, sysdate(), #{address}, #{phone}, #{role})
-	</insert>
-	
+ 		INSERT INTO users (id, name, password, email, joinDate, address, phone, role)
+    	VALUES (null, #{name}, #{password}, #{email}, #{joinDate}, #{address}, #{phone}, #{role})	</insert>
+	<select id="findByEmail" parameterType="String" resultType="User">
+    SELECT * FROM users WHERE email = #{email}
+	</select>
 	<select id="findByName" parameterType="String" resultType="User">
 		select * from users where name = #{name}
 	</select>
