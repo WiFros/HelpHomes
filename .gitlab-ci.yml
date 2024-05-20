@@ -3,7 +3,7 @@ image: eclipse-temurin:17
 services:
   - docker:dind
   - mariadb:latest
-
+# 테스트 
 stages:
   - build
   - run
