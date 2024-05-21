@@ -25,23 +25,14 @@ public class JwtUtil {
     private final long accessTokenExpiresIn;
 
     public JwtUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") long accessTokenExpiresIn) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes()); // 수정된 부분
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
         this.accessTokenExpiresIn = accessTokenExpiresIn;
     }
 
-    /*
-     * access token 생성
-     * 
-     * @param user
-     * 
-     * @return jwt token String
-     */
     public String createAccessToken(User user) {
         return createToken(user, accessTokenExpiresIn);
     }
-    /*
-     * jwt token 생성
-     */
+
     private String createToken(User user, long expireTime) {
         Claims claims = Jwts.claims();
         claims.put("id", user.getId());
@@ -52,29 +43,20 @@ public class JwtUtil {
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
+                .setSubject(user.getEmail())  // subject 설정
                 .setIssuedAt(Date.from(now.toInstant()))
                 .setExpiration(Date.from(tokenValidity.toInstant()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-
-        log.info("Generated JWT Token: {}", token); // 생성된 토큰 로그 출력
-        return token;
     }
 
-    public String getUserEmailFromToken(String token) {
+    public String getEmailFromToken(String token) {
         Claims claims = parseClaims(token);
-        return claims.getSubject();
+        return claims.get("email", String.class);
     }
 
-    /*
-     * jwt token 검증
-     * 
-     * @param token
-     * 
-     * @return jwt token String
-     */
     public Claims parseClaims(String token) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
@@ -89,23 +71,15 @@ public class JwtUtil {
         return (String) claims.get("role");
     }
 
-    /*
-     * jwt token 유효성 검사
-     * 
-     * @param token
-     * 
-     * @return jwt token String
-     */
     public boolean validateToken(String token) {
-        System.out.println("Token : "+token);
         if (token == null || token.split("\\.").length != 3) {
-            log.error("Invalid JWT token format"); // 잘못된 JWT 형식 로그
+            log.error("Invalid JWT token format");
             return false;
         }
 
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            log.info("JWT token is valid"); // 유효한 JWT 토큰 로그
+            log.info("JWT token is valid");
             return true;
         } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e) {
             log.error("Invalid JWT signature -> Message: {} ", e.getMessage());
@@ -119,5 +93,4 @@ public class JwtUtil {
 
         return false;
     }
-
 }

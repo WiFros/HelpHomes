@@ -21,7 +21,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            
             User user = userMapper.findByEmail(email);
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with email: " + email);
@@ -31,6 +30,18 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .password(user.getPassword())
                     .roles(user.getRole())
                     .build();
+        } catch (SQLException e) {
+            throw new UsernameNotFoundException("Error retrieving user from database", e);
+        }
+    }
+
+    public User getUser(String email) throws UsernameNotFoundException {
+        try {
+            User user = userMapper.findByEmail(email);
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found with email: " + email);
+            }
+            return user;
         } catch (SQLException e) {
             throw new UsernameNotFoundException("Error retrieving user from database", e);
         }

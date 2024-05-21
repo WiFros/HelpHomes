@@ -18,8 +18,8 @@
             <div class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0">
               <div class="card card-plain">
                 <div class="pb-0 card-header text-start">
-                  <h4 class="font-weight-bolder">Sign In</h4>
-                  <p class="mb-0">Enter your email and password to sign in</p>
+                  <h4 class="font-weight-bolder">로그인</h4>
+                  <p class="mb-0">이메일과 비밀번호를 입력하세요</p>
                 </div>
                 <div class="card-body">
                   <div class="mb-3">
@@ -42,7 +42,7 @@
                       v-model="password"
                     />
                   </div>
-                  <argon-switch id="rememberMe" name="remember-me">Remember me</argon-switch>
+                  <argon-switch id="rememberMe" name="remember-me">이메일 저장</argon-switch>
                   <div class="text-center">
                     <argon-button
                       class="mt-4"
@@ -52,14 +52,14 @@
                       size="lg"
                       @click="loginProcess"
                     >
-                      Sign in
+                      로그인
                     </argon-button>
                   </div>
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
-                    Don't have an account?
-                    <a href="javascript:;" class="text-success text-gradient font-weight-bold">Sign up</a>
+                    계정이 없으신가요?
+                    <a href="javascript:;" class="text-success text-gradient font-weight-bold">회원가입</a>
                   </p>
                 </div>
               </div>
@@ -76,10 +76,10 @@
               >
                 <span class="mask bg-gradient-success opacity-6"></span>
                 <h4 class="mt-5 text-white font-weight-bolder position-relative">
-                  "Attention is the new currency"
+                  도와줘 홈즈
                 </h4>
                 <p class="text-white position-relative">
-                  The more effortless the writing looks, the more effort the writer actually put into the process.
+                  새로운 집을 찾거나 내 집을 팔고 싶다면 도와줘 홈즈를 통해 부동산 자산을 관리 할 수 있습니다.
                 </p>
               </div>
             </div>
@@ -120,19 +120,25 @@ function loginProcess() {
     response => {
       console.log('Login response:', response.data);  // 로그인 응답 로그 출력
 
-      // 응답 데이터가 직접 토큰인 경우
       const token = response.data;
       if (token) {
-        localStorage.setItem('token', token);  // 토큰 저장 로그
         console.log('Token stored in localStorage:', token);  // 저장된 토큰 로그 출력
 
-        store.dispatch('login', token);
-        router.push('/dashboard-default');  // 로그인 후 이동
+        store.dispatch('login', { token }).then(() => {
+          return store.dispatch('fetchUser', token);
+        }).then(() => {
+          router.push('/dashboard-default');  // 로그인 후 이동
+        }).catch(error => {
+          console.error('Error fetching user:', error);
+          alert('사용자 정보를 가져오는 데 실패했습니다.');
+        });
       } else {
         console.error('Invalid token received from server');
+        alert('Invalid token received from server');  // 토큰이 없는 경우 에러 로그 alert 로 출력
       }
     },
     error => {
+      alert('로그인 실패');  // 로그인 실패 alert 출력
       console.error('Login error:', error);  // 로그인 에러 로그 출력
     }
   );

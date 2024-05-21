@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import axios from 'axios';
 
 export default createStore({
   state: {
@@ -17,7 +18,8 @@ export default createStore({
     showFooter: true,
     showMain: true,
     layout: "default",
-    token: localStorage.getItem('token') || '' // 추가된 상태
+    token: localStorage.getItem('token') || '', // 추가된 상태
+    user: JSON.parse(localStorage.getItem('user')) || null, // 추가된 상태
   },
   mutations: {
     toggleConfigurator(state) {
@@ -48,20 +50,43 @@ export default createStore({
     clearToken(state) { // 추가된 뮤테이션
       state.token = '';
       localStorage.removeItem('token');
+    },
+    setUser(state, user) { // 추가된 뮤테이션
+      state.user = user;
+      localStorage.setItem('user', JSON.stringify(user));
+    },
+    clearUser(state) { // 추가된 뮤테이션
+      state.user = null;
+      localStorage.removeItem('user');
     }
+
   },
   actions: {
     toggleSidebarColor({ commit }, payload) {
       commit("sidebarType", payload);
     },
-    login({ commit }, token) { // 추가된 액션
+    login({ commit }, { token }) {
       commit('setToken', token);
+      return Promise.resolve();
     },
-    logout({ commit }) { // 추가된 액션
+    logout({ commit }) {
       commit('clearToken');
+      commit('clearUser');
+    },
+    fetchUser({ commit }, token) {
+      return axios.post('/api/auth/me', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(response => {
+        commit('setUser', response.data);
+        return response.data;
+      });
     }
   },
+
   getters: {
-    isAuthenticated: state => !!state.token // 추가된 게터
+    isAuthenticated: state => !!state.token, // 추가된 게터
+    getUser: state => state.user // 추가된 게터
   }
 });
