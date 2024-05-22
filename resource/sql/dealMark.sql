@@ -1,8 +1,9 @@
 use ssafyweb;
+DROP TABLE IF EXISTS `dealMark`;
 CREATE TABLE `dealMark` (
-  `user_id` INT NOT NULL,
+  `userId` INT NOT NULL,
   `aptCode` BIGINT NOT NULL,
-  PRIMARY KEY (`user_id`, `aptCode`),
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
+  PRIMARY KEY (`userId`, `aptCode`),
+  FOREIGN KEY (`userId`) REFERENCES `users`(`id`),
   FOREIGN KEY (`aptCode`) REFERENCES `houseinfo`(`aptCode`)
 );

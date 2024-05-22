@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/board")
 public class BoardRestController {
-	
+
 	@Autowired
 	private BoardService service;
 
@@ -48,7 +48,6 @@ public class BoardRestController {
 						service.selectOne(num)));
 	}
 
-
 	@DeleteMapping("/{num}")
 	public ResponseEntity<ResultDto<Integer>> delete(@PathVariable("num") Integer num,
 			HttpSession session) throws SQLException {
@@ -58,20 +57,17 @@ public class BoardRestController {
 					.body(new ResultDto<>(
 							403,
 							"access only admin",
-							null
-							));
+							null));
 		}
 		return ResponseEntity.status(200)
 				.body(new ResultDto<>(
 						200,
 						"ok",
-						service.delete(num)
-						));
+						service.delete(num)));
 	}
 
-	
 	@PostMapping("")
-	public ResponseEntity<ResultDto<Integer>> insertProcess(@RequestBody Board b, 
+	public ResponseEntity<ResultDto<Integer>> insertProcess(@RequestBody Board b,
 			HttpSession session) throws SQLException {
 		// 세션 확인 로직 추가 필요
 		if (!checkAdmin(session)) {
@@ -79,17 +75,15 @@ public class BoardRestController {
 					.body(new ResultDto<>(
 							403,
 							"access only admin",
-							null
-							));
+							null));
 		}
 		return ResponseEntity.status(200)
 				.body(new ResultDto<>(
 						201,
 						"created",
-						service.insert(b)
-						));
+						service.insert(b)));
 	}
-	
+
 	@PostMapping("/{num}")
 	public ResponseEntity<ResultDto<Integer>> modifyProcess(@PathVariable("num") Integer num,
 			@RequestBody Board dto,
@@ -100,19 +94,16 @@ public class BoardRestController {
 					.body(new ResultDto<>(
 							403,
 							"access only admin",
-							null
-							));
+							null));
 		}
 		dto.setNum(num);
 		return ResponseEntity.status(200)
 				.body(new ResultDto<>(
 						200,
 						"ok",
-						service.modify(dto)
-						));
+						service.modify(dto)));
 	}
-	
-	
+
 	@ExceptionHandler(Exception.class)
 	public ModelAndView errorProcess() {
 		ModelAndView mv = new ModelAndView();
@@ -120,10 +111,9 @@ public class BoardRestController {
 		mv.setViewName("error");
 		return mv;
 	}
-	
-	
+
 	private boolean checkAdmin(HttpSession httpSession) {
-		if (httpSession.getAttribute("user")!=null&&httpSession.getAttribute("user").equals("admin")) {
+		if (httpSession.getAttribute("user") != null && httpSession.getAttribute("user").equals("admin")) {
 			return true;
 		}
 		return true; // test용으로 true 처리함

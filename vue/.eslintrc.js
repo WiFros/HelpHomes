@@ -8,7 +8,7 @@ module.exports = {
     parser: "@babel/eslint-parser",
   },
   globals: {
-    daum: 'readonly'
+    daum: "readonly",
   },
   rules: {
     "prettier/prettier": "off",

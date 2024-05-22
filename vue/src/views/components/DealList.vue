@@ -28,9 +28,17 @@
         <div class = "scrollable-content">
         <table class=" table align-items-center mb-0">
           <tbody>
-            <tr v-for="aptDeal in aptDealList" :key="aptDeal.aptCode">
+            <tr v-for="(aptDeal, index) in aptDealList" :key="aptDeal.aptCode">
               <td>
                 <div class="d-flex px-2 py-1">
+
+                
+                  <button v-if="viewMarkList[index]" @click="unMark(aptDeal,index)">
+                      찜해제
+                    </button>
+                    <button v-else @click="mark(aptDeal,index)">
+                      찜하기
+                    </button>
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">
                       <RouterLink :to="{
@@ -44,6 +52,7 @@
                       {{ aptDeal.dealAmount }} 억
                     </p>
                   </div>
+                  
                 </div>
               </td>
               <!-- <td>
@@ -61,14 +70,40 @@
 
 <script setup>
 import { RouterLink } from 'vue-router';
-import { defineProps } from 'vue';
-
-defineProps({
-  aptDealList: Array
-})
+import { defineProps,defineEmits,watch,ref } from 'vue';
 
 
+const props = defineProps({
+  aptDealList: Array,
+  aptMarkList: Array
+});
 
+const viewMarkList = ref([]);
+
+const emits = defineEmits(['dealMark']);
+
+// aptDealList가 변경될 때마다 viewMarkList 업데이트
+watch(() => props.aptDealList, (newVal) => {
+  updateViewMarkList(newVal);
+});
+
+// viewMarkList 업데이트 함수
+function updateViewMarkList(dealList) {
+  for (let i = 0; i < dealList.length; i++) {
+  viewMarkList.value.push( props.aptMarkList.includes(dealList[i].aptCode));
+  }
+
+}
+
+function mark(aptDeal,index) {
+  emits('dealMark', aptDeal);
+  viewMarkList.value[index] = true;
+} 
+
+function unMark(aptDeal,index) {
+  emits('dealUnMark', aptDeal);
+  viewMarkList.value[index] = false;
+}
 </script>
 
 

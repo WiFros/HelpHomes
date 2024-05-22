@@ -17,7 +17,7 @@ export default {
     aptMarkerList: {
       handler(newVal) {
         console.log("--- map으로 데이터 도착 ---");
-        console.log("Apt Deal List Updated:", newVal);
+        console.log("Apt Deal List Updated:", newVal.length);
         this.initMap();
       },
       deep: true
