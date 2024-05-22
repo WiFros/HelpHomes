@@ -50,6 +50,7 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<User> findById(@PathVariable("id") Integer id) throws SQLException {
+	
 		return ResponseEntity.ok(userService.findById(id));
 	}
 

@@ -15,8 +15,6 @@ import QnaDetail from "../views/QnaDetail.vue";
 // deal detail
 import DealDetail from "../views/DealDetail.vue";
 
-import store from "@/store"; // Vuex 스토어 가져오기
-
 const routes = [
   {
     path: "/",
@@ -99,18 +97,6 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: "active",
-});
-
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.getters.isAuthenticated) {
-      next({ path: '/signin' });
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
 });
 
 export default router;

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeUnmount, onBeforeMount } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router'; // 추가된 부분
 
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
@@ -10,6 +11,8 @@ import ArgonButton from "@/components/ArgonButton.vue";
 const body = document.getElementsByTagName("body")[0];
 
 const store = useStore();
+const router = useRouter(); // 추가된 부분
+
 onBeforeMount(() => {
   store.state.hideConfigButton = true;
   store.state.showNavbar = false;
@@ -29,7 +32,7 @@ const name = ref("");
 const email = ref("");
 const password = ref("");
 const address = ref("");
-const phoneNumber = ref("");
+const phone = ref("");
 
 function handleAddressClick() {
   new daum.Postcode({
@@ -38,14 +41,25 @@ function handleAddressClick() {
     }
   }).open();
 }
+
 function register() {
-  // 회원가입 로직 구현
-  console.log({
+  const signupData = {
     name: name.value,
     email: email.value,
     password: password.value,
     address: address.value,
-    phoneNumber: phoneNumber.value
+    phone: phone.value
+  };
+
+  console.log('Signup data:', signupData); // 회원가입 데이터 로그 출력
+
+  // 회원가입 API 호출
+  store.dispatch('signup', signupData).then(() => {
+    console.log('회원가입 성공');
+    router.push('/login'); // 회원가입 후 로그인 페이지로 이동
+  }).catch(error => {
+    alert('회원가입 실패: ' + error.response.data);
+    console.error('회원가입 실패:', error);
   });
 }
 
@@ -86,20 +100,23 @@ function register() {
               <h5>회원가입</h5>
             </div>
             <div class="card-body">
-              <form role="form">
+              <form role="form" @submit.prevent="register">
                 <argon-input
+                  v-model="name"
                   id="name"
                   type="text"
                   placeholder="이름"
                   aria-label="Name"
                 />
                 <argon-input
+                  v-model="email"
                   id="email"
                   type="email"
                   placeholder="이메일"
                   aria-label="Email"
                 />
                 <argon-input
+                  v-model="password"
                   id="password"
                   type="password"
                   placeholder="비밀번호"
@@ -107,16 +124,19 @@ function register() {
                 />
                 <argon-input
                   v-model="address"
+                  id="address"
                   type="text"
                   placeholder="주소"
                   aria-label="Address"
-                  @focus="handleAddressClick"
+                  readonly
+                  @click="handleAddressClick"
                 />
                 <argon-input
-                  v-model="phoneNumber"
+                  v-model="phone"
+                  id="phone"
                   type="text"
                   placeholder="번호"
-                  aria-label="PhoneNumber"
+                  aria-label="Phone"
                 />
                 <div class="text-center">
                   <argon-button
@@ -124,15 +144,12 @@ function register() {
                     color="dark"
                     variant="gradient"
                     class="my-4 mb-2"
-                    @click="register"
-                    >가입</argon-button
-                  >
+                    type="submit"
+                  >가입</argon-button>
                 </div>
                 <p class="text-sm mt-3 mb-0">
                   이미 계정이 있으신가요?
-                  <a href="javascript:;" class="text-dark font-weight-bolder"
-                    >로그인</a
-                  >
+                  <router-link to="/signin" class="text-success text-gradient font-weight-bold">로그인</router-link>
                 </p>
               </form>
             </div>

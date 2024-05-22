@@ -9,6 +9,8 @@ import com.user.vo.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "인증 API")
+@Slf4j
 public class AuthApiController {
     private final AuthService authService;
     private final CustomUserDetailsService customUserDetailsService;
@@ -39,10 +42,18 @@ public class AuthApiController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
-    public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
-        authService.signup(signupRequestDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
+        try {
+            log.info("Received signup data: {}", signupRequestDto);
+            authService.signup(signupRequestDto);
+            return ResponseEntity.ok("회원가입 성공");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+        }
     }
+    
 
     @PostMapping("/me")
     @Operation(summary = "현재 사용자 정보")

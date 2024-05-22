@@ -46,25 +46,25 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void signup(SignupRequestDto signupRequestDto) {
         try {
-            User existingUser = userMapper.findByName(signupRequestDto.getUsername());
-
+            User existingUser = userMapper.findByEmail(signupRequestDto.getEmail());
             if (existingUser != null) {
-                throw new IllegalArgumentException("이미 존재하는 사용자 이름입니다.");
+                throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
             }
 
             User user = new User();
-            user.setName(signupRequestDto.getUsername());
+            user.setName(signupRequestDto.getName());
             String encodedPassword = passwordEncoder.encode(signupRequestDto.getPassword());
             user.setPassword(encodedPassword);
             user.setEmail(signupRequestDto.getEmail());
             user.setAddress(signupRequestDto.getAddress());
             user.setPhone(signupRequestDto.getPhone());
-            user.setRole("user"); // 디폴트 role 설정
-            user.setJoinDate(new Timestamp(new Date().getTime())); // 현재 날짜를 가입 날짜로 설정
+            user.setRole("user");
+            user.setJoinDate(new Timestamp(new Date().getTime()));
 
             userMapper.register(user);
         } catch (SQLException e) {
             throw new RuntimeException("회원가입 중 오류가 발생했습니다.", e);
         }
     }
+
 }

@@ -57,6 +57,11 @@ public class JwtUtil {
         return claims.get("email", String.class);
     }
 
+    public String getIdFromToken(String token) {
+        Claims claims = parseClaims(token);
+        return claims.get("id", String.class);
+    }
+
     public Claims parseClaims(String token) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
