@@ -11,7 +11,7 @@
 	</select>
 		
 	<select id="dongSearch" parameterType="java.util.Map" resultType="AptDeal">
-		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode, h.apartmentName as aptName,h.lng,h.lat,h.aptCode
+		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode, h.apartmentName as aptName,h.lng,h.lat,h.aptCode,h.roadName,h.roadNameSeq
 		from housedeal d join houseinfo h
 		on d.aptCode = h.aptCode
 		where d.dealYear = #{year} and d.dealMonth = #{month} and h.dong = #{dongName};

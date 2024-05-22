@@ -14,17 +14,16 @@ public class AptDeal {
 	private String aptName;
 	private double lng;
 	private double lat;
-	
-	
-	
+	private String roadName;
+	private String roadNameSeq;
+
 	public AptDeal() {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 	public AptDeal(Long no, String dealAmount, Integer dealYear, Integer dealMonth, Integer dealDay, String area,
-			String floor, String cancelDealType, Long aptCode, String aptName, double lng, double lat) {
+			String floor, String cancelDealType, Long aptCode, String aptName, double lng, double lat, String roadName,
+			String roadNameSeq) {
 		super();
 		this.no = no;
 		this.dealAmount = dealAmount;
@@ -38,33 +37,25 @@ public class AptDeal {
 		this.aptName = aptName;
 		this.lng = lng;
 		this.lat = lat;
+		this.roadName = roadName;
+		this.roadNameSeq = roadNameSeq;
 	}
-
-
 
 	public double getLng() {
 		return lng;
 	}
 
-
-
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-
-
 
 	public double getLat() {
 		return lat;
 	}
 
-
-
 	public void setLat(double lat) {
 		this.lat = lat;
 	}
-
-
 
 	public Long getNo() {
 		return no;
@@ -145,6 +136,21 @@ public class AptDeal {
 	public void setAptName(String aptName) {
 		this.aptName = aptName;
 	}
-	
-	
+
+	public String getRoadName() {
+		return roadName;
+	}
+
+	public void setRoadName(String roadName) {
+		this.roadName = roadName;
+	}
+
+	public String getRoadNameSeq() {
+		return roadNameSeq;
+	}
+
+	public void setRoadNameSeq(String roadNameSeq) {
+		this.roadNameSeq = roadNameSeq;
+	}
+
 }

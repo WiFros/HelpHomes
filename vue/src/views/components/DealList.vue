@@ -1,75 +1,6 @@
-<template>
-  <div class="card">
-    <div class="card-header pb-0">
-      <h6>매물 목록</h6>
-    </div>
-
-
-    <div class="card-body px-0 pt-0 pb-2 ">
-      <div class="table-responsive p-0">
-        
-        <div class = "scrollable-table">
-        <table class="table align-items-center mb-0">
-          <thead>
-            <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                아파트 이름
-              </th>
-              <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                거래금액
-              </th> -->
-              <th class="text-secondary opacity-7"></th>
-            </tr>
-          </thead>
-          </table>
-        </div>
-
-          <!-- Table Body -->
-        <div class = "scrollable-content">
-        <table class=" table align-items-center mb-0">
-          <tbody>
-            <tr v-for="(aptDeal, index) in aptDealList" :key="aptDeal.aptCode">
-              <td>
-                <div class="d-flex px-2 py-1 col-12">
-
-                  
-                  
-                    <div class="col-lg-11 d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">
-                      <RouterLink :to="{
-                        name: 'DealDetail',
-                        params: { aptCode: aptDeal.aptCode ,floor : aptDeal.floor}
-                      }">
-                    {{ aptDeal.aptName }} {{ aptDeal.floor }}층
-                      </RouterLink>
-                    </h6>
-                    <p class="text-xs text-secondary mb-0">
-                      {{ aptDeal.dealAmount }} 억
-                    </p>
-                  </div>
-                  <div class = "col-lg-1">
-                    <i v-if="viewMarkList[index]" @click="unMark(aptDeal,index)" class='fas fa-bookmark' style='font-size:24px'></i>
-                    <i v-else @click="mark(aptDeal,index)" class='far fa-bookmark' style='font-size:24px'></i>
-                  </div>
-                </div>
-              </td>
-              <!-- <td>
-                <p class="text-xs font-weight-bold mb-0">{{ aptDeal.writer }}</p>
-                <p class="text-xs text-secondary mb-0">{{ aptDeal.region }}</p>
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { RouterLink } from 'vue-router';
-import { defineProps,defineEmits,watch,ref } from 'vue';
-
+import { defineProps, defineEmits, watch, ref } from 'vue';
 
 const props = defineProps({
   aptDealList: Array,
@@ -87,31 +18,100 @@ watch(() => props.aptDealList, (newVal) => {
 
 // viewMarkList 업데이트 함수
 function updateViewMarkList(dealList) {
-  for (let i = 0; i < dealList.length; i++) {
-  viewMarkList.value.push( props.aptMarkList.includes(dealList[i].aptCode));
-  }
-
+  viewMarkList.value = dealList.map(deal => props.aptMarkList.includes(deal.aptCode));
 }
 
-function mark(aptDeal,index) {
+function mark(aptDeal, index) {
   emits('dealMark', aptDeal);
   viewMarkList.value[index] = true;
-} 
+}
 
-function unMark(aptDeal,index) {
+function unMark(aptDeal, index) {
   emits('dealUnMark', aptDeal);
   viewMarkList.value[index] = false;
 }
 </script>
 
+<template>
+  <div class="card">
+    <div class="card-header pb-0">
+      <h6>매물 목록</h6>
+    </div>
+    <div class="card-body pt-1 p-2">
+      <div class="table-responsive p-0">
+        <!-- Table Body -->
+        <div class="scrollable-content">
+          <ul class="list-group">
+            <li
+              v-for="(aptDeal, index) in aptDealList"
+              :key="aptDeal.aptCode"
+              class="list-group-item border-0 m-1 bg-gray-200 border-radius-lg d-flex align-items-center custom-list-item"
+            >
+              <div class="col-lg-4 ">
+                <div class="text-dark font-weight-bold pt-1 pl-1" style="font-size:16px;">
+                  {{ aptDeal.aptName }}
+                </div>
+                <RouterLink
+                  :to="{
+                    name: 'DealDetail',
+                    params: { aptCode: aptDeal.aptCode, floor: aptDeal.floor }
+                  }"
+                >
+                  <button type="button" class="btn btn-secondary custom-btn">
+                    상세 <i class="fas fa-search" style="font-size: 12px"></i>
+                  </button>
+                </RouterLink>
+              </div>
+              <div class="col-lg-7">
+                <div class="text-xs">
+                  층수 :
+                  <span class="text-dark font-weight-bold ms-sm-1">{{ aptDeal.floor }}층</span>
+                </div>
+                <div class="text-xs">
+                  매매가 :
+                  <span class="text-dark ms-sm-1 font-weight-bold">{{ aptDeal.dealAmount }} 억</span>
+                </div>
+                <div class="text-xs">
+                  주소 :
+                  <span class="text-dark ms-sm-1 font-weight-bold">{{ aptDeal.roadName }}</span>
+                </div>
+              </div>
+              <div class="col-lg-1 p-0">
+                <i
+                  v-if="viewMarkList[index]"
+                  @click="unMark(aptDeal, index)"
+                  class="fas fa-bookmark"
+                  style="font-size:24px;"
+                ></i>
+                <i
+                  v-else
+                  @click="mark(aptDeal, index)"
+                  class="far fa-bookmark"
+                  style="font-size:24px;"
+                ></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
-.scrollable-table {
-  overflow-x: auto;
-}
 .scrollable-content {
   min-height: 480px; /* 내용이 표시될 최대 높이 */
   max-height: 300px; /* 내용이 표시될 최대 높이 */
   overflow-y: auto; /* 세로 스크롤 추가 */
+}
+
+.custom-btn {
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+.custom-list-item {
+  display: flex;
+  align-items: center;
 }
 </style>
