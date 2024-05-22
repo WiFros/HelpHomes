@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
 import DealList from "./components/DealList.vue";
 import DealSearchBar from "./components/DealSearchBar.vue";
 // import Carousel from "./components/Carousel.vue";
@@ -6,6 +8,9 @@ import Map from "./components/Map.vue";
 
 import { onMounted, ref } from 'vue';
 import { searchByDong } from '../api/aptDeal.js';
+
+const store = useStore();
+const user = computed(() => store.state.user);
 
 const aptDealList = ref([]);
 
@@ -15,7 +20,9 @@ onMounted(() => {
     (response) => {
       console.log(response.data.length+"개의 아파트 거래 정보를 불러왔습니다.");
       aptDealList.value = response.data;
+      console.log("user" + user.value.id);
     },
+  
     (error) => {
       console.error(error);
     }

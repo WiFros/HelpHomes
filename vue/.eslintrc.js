@@ -7,6 +7,9 @@ module.exports = {
   parserOptions: {
     parser: "@babel/eslint-parser",
   },
+  globals: {
+    daum: 'readonly'
+  },
   rules: {
     "prettier/prettier": "off",
     "vue/multi-word-component-names": "off",
