@@ -18,6 +18,7 @@ watch(() => props.aptDealList, (newVal) => {
 
 // viewMarkList 업데이트 함수
 function updateViewMarkList(dealList) {
+  viewMarkList.value.length = 0;
   viewMarkList.value = dealList.map(deal => props.aptMarkList.includes(deal.aptCode));
 }
 

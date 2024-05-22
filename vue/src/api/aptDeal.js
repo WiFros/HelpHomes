@@ -1,7 +1,11 @@
 import axios from "@/utils/axios.common.js";
 
-function searchByDong(success, fail) {
-  axios.get("/apt/dongSearch?dongName=정왕동&year=2019&month=07").then(success).catch(fail);
+function searchByDong(params, success, fail) {
+  console.log(params.dongName, params.year, params.month);
+  axios
+    .get(`/apt/dongSearch?dongName=${params.dongName}&year=${params.year}&month=${params.month}`)
+    .then(success)
+    .catch(fail);
 }
 
 function searchByAptCode(param, success, fail) {

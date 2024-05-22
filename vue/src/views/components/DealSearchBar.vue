@@ -33,7 +33,7 @@
           </select>
         </div>
         <div class="form-group col-md-2 m-0">
-          <button type="button" id="list-btn" class="btn btn-outline-primary" @click="fetchAptDeals">
+          <button type="button" id="list-btn" class="btn btn-outline-primary" @click="clickDong">
             아파트매매정보
           </button>
         </div>
@@ -55,9 +55,10 @@ const selectedGugun = ref('');
 const selectedDong = ref('');
 const selectedYear = ref('');
 const selectedMonth = ref('');
-const yearList = ref([2021, 2022, 2023]); // 실제 데이터에 맞게 수정
-const monthList = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+const yearList = ref([2018,2019,2021, 2022, 2023]); // 실제 데이터에 맞게 수정
+const monthList = ref(["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]);
 
+const emits = defineEmits(['clickDong']);
 onMounted(() => {
   fetchSidoList();
 });
@@ -97,6 +98,15 @@ function fetchDongList() {
       console.error('Failed to fetch dong list:', error);
     }
   );
+  }
+
+  function clickDong() {
+  const params = {
+    dongName: selectedDong.value,
+    year: selectedYear.value,
+    month: selectedMonth.value
+  };
+  emits('clickDong',params);
 }
 
   </script>

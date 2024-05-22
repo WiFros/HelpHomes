@@ -42,7 +42,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { selectAll} from '../../api/qna.js';
+import { selectAll } from '../../api/qna.js';
 import { RouterLink } from 'vue-router';
 
 const qnaList = ref([]);
