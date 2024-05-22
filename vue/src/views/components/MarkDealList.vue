@@ -63,7 +63,7 @@
                   <span class="text-dark text-xs font-weight-bold">
                     <i
                       class="fas fa-map-marker-alt"
-                      style="font-size: 20px"
+                      style="font-size: 24px"
                     ></i>
                   </span>
                 </td>
