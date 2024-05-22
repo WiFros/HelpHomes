@@ -68,7 +68,7 @@ defineProps({
   overflow-x: auto;
 }
 .scrollable-content {
-  min-height: 240px; /* 내용이 표시될 최대 높이 */
+  min-height: 260px; /* 내용이 표시될 최대 높이 */
   max-height: 150px; /* 내용이 표시될 최대 높이 */
   overflow-y: auto; /* 세로 스크롤 추가 */
 }
