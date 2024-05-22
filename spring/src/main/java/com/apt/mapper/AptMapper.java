@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-
+import org.apache.ibatis.annotations.Select;
 
 import com.apt.vo.AptDeal;
+import com.apt.vo.DongCode;
 
 @Mapper
 public interface AptMapper {
@@ -18,5 +19,7 @@ public interface AptMapper {
 	public List<AptDeal> aptSearch(Map map) throws SQLException;
 	public List<AptDeal> aptFloorSearch(Map map) throws SQLException;
 
+    @Select("SELECT dongCode, sidoName, gugunName, dongName FROM dongcode")
+	public List<DongCode> findAllLocation();
 }
 

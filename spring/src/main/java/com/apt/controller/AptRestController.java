@@ -1,6 +1,7 @@
 package com.apt.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apt.service.AptService;
+import com.apt.trie.Trie;
+import com.apt.trie.TrieNode;
 import com.apt.vo.AptDeal;
 
 @CrossOrigin("*") 
@@ -22,7 +25,7 @@ public class AptRestController {
 	
 	@Autowired
 	AptService service;
-	
+
 	//전체 조회 
 	@GetMapping("")
 	public ResponseEntity<List<AptDeal>> search(@RequestParam("year") String year, @RequestParam("month") String month) throws SQLException {
@@ -75,6 +78,20 @@ public class AptRestController {
 			return res;
 		}
 	}
+	@GetMapping("/sido")
+    public List<String> getSidoList() {
+        return service.getSidoList();
+    }
+
+    @GetMapping("/gugun")
+    public List<String> getGugunList(@RequestParam String sido) {
+        return service.getGugunList(sido);
+    }
+
+    @GetMapping("/dong")
+    public List<String> getDongList(@RequestParam String sido, @RequestParam String gugun) {
+        return service.getDongList(sido, gugun);
+    }
 }
 
 
