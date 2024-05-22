@@ -6,6 +6,7 @@ import MiniLogin from './components/MiniLogin.vue';
 import ProfileCard from './components/ProfileCard.vue';
 import Map from './components/Map.vue';
 import { useStore } from 'vuex';
+
 const store = useStore();
 </script>
 

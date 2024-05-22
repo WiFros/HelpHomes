@@ -13,7 +13,7 @@ public class Apart {
     private String roadName;
     private String roadNameSeq;
     private String dongName;
-	private String aptName;
+	private String apartMentName;
 	private double lng;
 	private double lat;
 }

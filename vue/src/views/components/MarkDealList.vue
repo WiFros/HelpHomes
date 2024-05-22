@@ -4,46 +4,72 @@
       <h6>관심 매물</h6>
     </div>
 
-
-    <div class="card-body px-0 pt-0 pb-2 ">
+    <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        
-        <div class = "scrollable-table">
-        <table class="table align-items-center mb-0">
-          <thead>
-          </thead>
+        <div class="scrollable-table">
+          <table class="table align-items-center mb-0">
+            <thead></thead>
           </table>
         </div>
 
-          <!-- Table Body -->
-        <div class = "scrollable-content">
-        <table class=" table align-items-center mb-0">
-          <tbody>
-            <tr v-for="aptDeal in aptDealList" :key="aptDeal.aptCode">
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">
-                      <RouterLink :to="{
-                        name: 'DealDetail',
-                        params: { aptCode: aptDeal.aptCode ,floor : aptDeal.floor}
-                      }">
-                    {{ aptDeal.aptName }} {{ aptDeal.floor }}층
-                      </RouterLink>
-                    </h6>
-                    <p class="text-xs text-secondary mb-0">
-                      {{ aptDeal.dealAmount }} 억
-                    </p>
+        <!-- Table Body -->
+        <div class="scrollable-content">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-xs">매물 이름</th>
+
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  도로명 주소
+                </th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  상세보기
+                </th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  위치
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="markApt in markAptList" :key="markApt.aptCode">
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-sm">{{ markApt.apartMentName }}</h6>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <!-- <td>
-                <p class="text-xs font-weight-bold mb-0">{{ aptDeal.writer }}</p>
-                <p class="text-xs text-secondary mb-0">{{ aptDeal.region }}</p>
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
+                </td>
+
+                <td class="align-middle text-center">
+                  <span class="text-secondary text-xs font-weight-bold">{{
+                    markApt.roadName
+                  }}</span>
+                </td>
+
+                <td class="align-middle text-center">
+                  <span class="text-dark text-xs font-weight-bold">
+                    <i class="fas fa-search" style="font-size: 20px"></i>
+                  </span>
+                </td>
+
+                <td class="align-middle text-center">
+                  <span class="text-dark text-xs font-weight-bold">
+                    <i
+                      class="fas fa-map-marker-alt"
+                      style="font-size: 20px"
+                    ></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -51,17 +77,34 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
-import { defineProps } from 'vue';
+import { useStore } from 'vuex';
 
-defineProps({
-  aptDealList: Array
-})
+import { selectAllMarkApart } from '../../api/aptDeal';
+import { onMounted, computed, ref } from 'vue';
 
+const store = useStore();
 
+const user = computed(() => store.state.user);
 
+const markAptList = ref([]);
+
+onMounted(() => {
+  console.log('m');
+  if (user.value.id) {
+    selectAllMarkApart(
+      user.value.id,
+      (response) => {
+        markAptList.value = response.data;
+        console.log('찜한 아파트 불러오기');
+        console.log(markAptList.value);
+      },
+      (err) => {
+        console.log(err);
+      },
+    );
+  }
+});
 </script>
-
 
 <style scoped>
 .scrollable-table {
