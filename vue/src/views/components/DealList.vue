@@ -100,7 +100,7 @@ function unMark(aptDeal, index) {
 
 <style scoped>
 .scrollable-content {
-  min-height: 480px; /* 내용이 표시될 최대 높이 */
+  min-height: 600px; /* 내용이 표시될 최대 높이 */
   max-height: 300px; /* 내용이 표시될 최대 높이 */
   overflow-y: auto; /* 세로 스크롤 추가 */
 }
