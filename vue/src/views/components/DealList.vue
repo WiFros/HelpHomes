@@ -30,16 +30,11 @@
           <tbody>
             <tr v-for="(aptDeal, index) in aptDealList" :key="aptDeal.aptCode">
               <td>
-                <div class="d-flex px-2 py-1">
+                <div class="d-flex px-2 py-1 col-12">
 
-                
-                  <button v-if="viewMarkList[index]" @click="unMark(aptDeal,index)">
-                      찜해제
-                    </button>
-                    <button v-else @click="mark(aptDeal,index)">
-                      찜하기
-                    </button>
-                  <div class="d-flex flex-column justify-content-center">
+                  
+                  
+                    <div class="col-lg-11 d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">
                       <RouterLink :to="{
                         name: 'DealDetail',
@@ -52,7 +47,10 @@
                       {{ aptDeal.dealAmount }} 억
                     </p>
                   </div>
-                  
+                  <div class = "col-lg-1">
+                    <i v-if="viewMarkList[index]" @click="unMark(aptDeal,index)" class='fas fa-bookmark' style='font-size:24px'></i>
+                    <i v-else @click="mark(aptDeal,index)" class='far fa-bookmark' style='font-size:24px'></i>
+                  </div>
                 </div>
               </td>
               <!-- <td>
