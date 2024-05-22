@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.apt.mapper.AptMapper;
 import com.apt.trie.Trie;
 import com.apt.trie.TrieNode;
+import com.apt.vo.Apart;
 import com.apt.vo.AptDeal;
 import com.apt.vo.DongCode;
 
@@ -68,6 +69,11 @@ public class AptServiceImpl implements AptService{
 	    return mapper.aptFloorSearch(map);
 	}
 
+	
+	@Override
+	public List<Apart> markApartSearch(String userId) throws SQLException{
+		return mapper.markAptSearch(userId);
+	}
 
 	public List<String> getSidoList() {
         TrieNode root = trie.getRoot();

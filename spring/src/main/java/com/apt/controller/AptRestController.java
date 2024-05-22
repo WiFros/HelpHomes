@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,10 @@ import com.apt.service.AptService;
 import com.apt.trie.Trie;
 import com.apt.trie.TrieNode;
 import com.apt.vo.AptDeal;
+import com.apt.vo.Apart;
+
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin("*") 
 @RestController
@@ -78,6 +83,24 @@ public class AptRestController {
 			return res;
 		}
 	}
+
+
+	@Operation(summary = "찜한 매물 목록 불러오기", description = "찜한 매물 목록을 불러옵니다.")
+	@GetMapping("/markApartAll/{userId}")
+	public ResponseEntity<List<Apart>> readAll(@PathVariable("userId") Integer userId,
+			HttpSession session) throws SQLException {
+				System.out.println(userId);
+				String userIdString = Integer.toString(userId);
+		List<Apart> list = service.markApartSearch(userIdString);
+		if (list != null && !list.isEmpty()) {
+			ResponseEntity<List<Apart>> res = new ResponseEntity<>(list, HttpStatus.OK);
+			return res;
+		} else {
+			ResponseEntity<List<Apart>> res = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return res;
+		}
+	}
+
 	@GetMapping("/sido")
     public List<String> getSidoList() {
         return service.getSidoList();
