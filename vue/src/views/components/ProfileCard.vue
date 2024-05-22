@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-profile">
+  <div v-if="user" class="card card-profile">
     <img
       src="../../assets/img/bg-profile.jpg"
       alt="Image placeholder"
@@ -64,20 +64,41 @@
       </div>
       <div class="text-center mt-4">
         <h5>
-          Mark Davis
-          <span class="font-weight-light">, 35</span>
+          {{ user.name }}
+          <!-- <span class="font-weight-light">, {{ user.age }}</span> -->
         </h5>
         <div class="h6 font-weight-300">
-          <i class="ni location_pin mr-2"></i>Bucharest, Romania
+          <i class="ni location_pin mr-2"></i>{{ user.address }}
         </div>
         <div class="h6 mt-4">
-          <i class="ni business_briefcase-24 mr-2"></i>Solution Manager -
-          Creative Tim Officer
+          <i class="ni business_briefcase-24 mr-2"></i>{{ user.phone }}
         </div>
-        <div>
-          <i class="ni education_hat mr-2"></i>University of Computer Science
-        </div>
+        <argon-button
+          class="mt-4"
+          variant="gradient"
+          color="danger"
+          @click="logoutProcess"
+        >
+          로그아웃
+        </argon-button>
       </div>
     </div>
   </div>
+  <div v-else>Loading...</div>
 </template>
+
+<script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
+const user = computed(() => store.getters.getUser);
+
+function logoutProcess() {
+  store.dispatch('logout').then(() => {
+    router.push('/dashboard-default');
+  });
+}
+</script>

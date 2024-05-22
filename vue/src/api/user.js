@@ -2,23 +2,37 @@ import axios from "@/utils/axios.common.js";
 import store from "@/store";
 
 function login(user, success, fail) {
-    console.log("login:", user);  // 로그인 시도 로그 출력
-
     axios
     .post(`/api/auth/login`, user)
     .then(response => {
-      console.log("Login response data:", response.data);  // 로그인 응답 데이터 로그 출력
       const token = response.data;
-      store.dispatch('login', { token })  // Vuex에 토큰 저장
-        .then(() => {
-          return store.dispatch('fetchUser', token);  // 사용자 정보 가져오기
-        })
-        .then(() => {
-          success(response);
-        })
+      store.dispatch('login', { token })
+        .then(() => store.dispatch('fetchUser', token))
+        .then(() => success(response))
         .catch(fail);
     })
     .catch(fail);
 }
 
-export { login };
+function signup(user, success, fail) {
+    axios
+    .post(`/api/auth/signup`, user)
+    .then(response => success(response))
+    .catch(fail);
+}
+
+function fetchUser(token, success, fail) {
+    axios
+    .post('/api/auth/me', {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      store.commit('setUser', response.data);
+      success(response.data);
+    })
+    .catch(fail);
+}
+
+export { login, signup, fetchUser };

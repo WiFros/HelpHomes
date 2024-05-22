@@ -43,23 +43,22 @@ export default createStore({
     navbarFixed(state) {
       state.isNavFixed = !state.isNavFixed;
     },
-    setToken(state, token) { // 추가된 뮤테이션
+    setToken(state, token) {
       state.token = token;
       localStorage.setItem('token', token);
     },
-    clearToken(state) { // 추가된 뮤테이션
+    clearToken(state) {
       state.token = '';
       localStorage.removeItem('token');
     },
-    setUser(state, user) { // 추가된 뮤테이션
+    setUser(state, user) {
       state.user = user;
       localStorage.setItem('user', JSON.stringify(user));
     },
-    clearUser(state) { // 추가된 뮤테이션
+    clearUser(state) {
       state.user = null;
       localStorage.removeItem('user');
     }
-
   },
   actions: {
     toggleSidebarColor({ commit }, payload) {
@@ -82,19 +81,10 @@ export default createStore({
         commit('setUser', response.data);
         return response.data;
       });
-    },
-    signup(_, signupData) { // commit 제거
-      return axios.post('/api/auth/signup', signupData).then(response => {
-        console.log('회원가입 성공:', response);
-      }).catch(error => {
-        console.error('회원가입 실패:', error.response.data);
-        throw error;
-      });
     }
   },
-
   getters: {
-    isAuthenticated: state => !!state.token, // 추가된 게터
-    getUser: state => state.user // 추가된 게터
+    isAuthenticated: state => !!state.token,
+    getUser: state => state.user
   }
 });

@@ -59,7 +59,7 @@
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     계정이 없으신가요?
-                    <a href="javascript:;" class="text-success text-gradient font-weight-bold">회원가입</a>
+                    <router-link to="/signup" class="text-success text-gradient font-weight-bold">회원가입</router-link>
                   </p>
                 </div>
               </div>
@@ -119,7 +119,7 @@ function loginProcess() {
     login_user,
     response => {
       console.log('Login response:', response.data);  // 로그인 응답 로그 출력
-
+      
       const token = response.data;
       if (token) {
         console.log('Token stored in localStorage:', token);  // 저장된 토큰 로그 출력
