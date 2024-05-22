@@ -83,7 +83,14 @@ export default createStore({
         return response.data;
       });
     },
-
+    signup(_, signupData) { // commit 제거
+      return axios.post('/api/auth/signup', signupData).then(response => {
+        console.log('회원가입 성공:', response);
+      }).catch(error => {
+        console.error('회원가입 실패:', error.response.data);
+        throw error;
+      });
+    }
   },
 
   getters: {
