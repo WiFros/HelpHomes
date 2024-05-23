@@ -17,7 +17,7 @@ const router = useRouter(); //setup단계에서 찾아놓기
 
 function qnaInsert() {
   const maskName =
-    writer.value.substring(0, 1) + "*" + writer.value.substring(2);
+    user.value.name.substring(0, 1) + "*" + user.value.name.substring(2);
   const new_qna = {
     writer: maskName,
     title: title.value,
