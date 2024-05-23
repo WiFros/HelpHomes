@@ -54,9 +54,16 @@
                 </td>
 
                 <td class="align-middle text-center">
+                  
+                <RouterLink
+                  :to="{
+                    name: 'DealDetail',
+                    params: { aptCode: markApt.aptCode, floor: 1}
+                  }"
+                >
                   <span class="text-dark text-xs font-weight-bold">
                     <i class="fas fa-search" style="font-size: 20px"></i>
-                  </span>
+                  </span></RouterLink>
                 </td>
 
                 <td class="align-middle text-center">
@@ -64,6 +71,7 @@
                     <i
                       class="fas fa-map-marker-alt"
                       style="font-size: 24px"
+                      @click="showRocation(markApt.lng,markApt.lat)"
                     ></i>
                   </span>
                 </td>
@@ -80,7 +88,7 @@
 import { useStore } from 'vuex';
 
 import { selectAllMarkApart } from '../../api/aptDeal';
-import { onMounted, computed, ref, watch } from 'vue';
+import {  computed, ref, watch } from 'vue';
 
 const store = useStore();
 
@@ -88,9 +96,9 @@ const user = computed(() => store.state.user);
 
 const markAptList = ref([]);
 
-onMounted(() => {
-  console.log('m');
-});
+
+const emits = defineEmits(['clickRocation']);
+
 
 watch(
   () => user.value,
@@ -115,6 +123,15 @@ watch(
   },
   { immediate: true }
 );
+
+function showRocation(lng,lat) {
+  const params = {
+    lng: lng, 
+    lat: lat
+  };
+  emits('clickRocation',params);
+}
+
 </script>
 
 <style scoped>
@@ -122,7 +139,7 @@ watch(
   overflow-x: auto;
 }
 .scrollable-content {
-  min-height: 260px; /* 내용이 표시될 최대 높이 */
+  min-height: 300px; /* 내용이 표시될 최대 높이 */
   max-height: 150px; /* 내용이 표시될 최대 높이 */
   overflow-y: auto; /* 세로 스크롤 추가 */
 }

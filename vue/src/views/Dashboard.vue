@@ -4,10 +4,17 @@ import MiniQnABoard from './components/MiniQnABoard.vue';
 import MarkDealList from './components/MarkDealList.vue';
 import MiniLogin from './components/MiniLogin.vue';
 import ProfileCard from './components/ProfileCard.vue';
-import Map from './components/Map.vue';
+import MiniMap from './components/MiniMap.vue';
 import { useStore } from 'vuex';
+import { ref } from 'vue';
 
 const store = useStore();
+const markerList = ref([]);
+
+function showRocation(params) {
+  markerList.value = [params];
+}
+
 </script>
 
 <template>
@@ -18,7 +25,7 @@ const store = useStore();
         <ProfileCard v-else />
       </div>
       <div class="col-lg-4 mb-lg">
-        <MarkDealList />
+        <MarkDealList  @clickRocation="showRocation"/>
         <div class="py-2">
           <MiniQnABoard />
         </div>
@@ -27,7 +34,7 @@ const store = useStore();
         <div class="col">
           <MiniDealSearchBar />
           <div class="py-3">
-            <Map :aptMarkerList="[]" />
+            <MiniMap :aptMarkerList="markerList" />
           </div>
         </div>
       </div>
