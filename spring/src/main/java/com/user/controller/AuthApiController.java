@@ -86,7 +86,7 @@ public class AuthApiController {
     @Operation(summary = "회원가입")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
         try {
-            log.info("Received signup data: {}", signupRequestDto);
+            log.info("Received signup data: {}", signupRequestDto.getEmail());
             authService.signup(signupRequestDto);
             return ResponseEntity.ok("회원가입 성공");
         } catch (IllegalArgumentException e) {
