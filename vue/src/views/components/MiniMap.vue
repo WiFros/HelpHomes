@@ -1,18 +1,19 @@
 <template>
   <div id="map-container">
     <div id="map" class="rounded-map"></div>
-    <button class="map-button" @click="handleButtonClick">지도 버튼</button>
+    <a
+      href="javascript:;"
+      class="btn btn-sm btn-dark float-right mb-0 map-button"
+      @click="handleButtonClick"
+    >내 지역 검색</a>
   </div>
 </template>
 
 <script>
-// service에서 props 로 받아온 아파트 리스트를 출력
 import { toRaw } from "vue";
 /* global kakao */
 
 export default {
-  /////////////////////////////////////////////////
-  // 지도만 출력했다 aptMarkerList를 받아올때, 마커 출력 
   props: {
     aptMarkerList: {
       type: Array,
@@ -29,16 +30,12 @@ export default {
       deep: true
     }
   },
-  // 지도만 출력했다 aptMarkerList를 받아올때, 마커 출력
-  /////////////////////////////////////////////////
-
   data() {
     return {
       markers: [],
       infowindow: null,
     };
   },
-
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -54,18 +51,14 @@ export default {
     initMap() {
         console.log("--- initmap ---");
         console.log("Apt Deal List Updated:", this.aptMarkerList.length);
-      
 
       const container = document.getElementById('map');
 
       const options = {
-        center: new kakao.maps.LatLng(37.499590490909185, 127.0263723554437), // 지도의 중심 좌표
-        level: 3, // 지도의 확대 레벨
+        center: new kakao.maps.LatLng(37.499590490909185, 127.0263723554437),
+        level: 3,
       };
       this.map = new kakao.maps.Map(container, options);
-
-
-      //this.displayMarker(this.markerPositions2);
 
       if (this.aptMarkerList.length != 0) {
         console.log("아파트 존재!")
@@ -75,14 +68,12 @@ export default {
       }
 
     },
-
     convertToLatLng(arr) {
       return arr.map((aptDeal) => [
         aptDeal.lat,
         aptDeal.lng,
       ]);
     },
-    
     displayMarker(markerPositions) {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
@@ -136,15 +127,5 @@ export default {
   top: 10px;
   right: 10px;
   z-index: 1000; /* 지도 위에 표시되도록 높은 z-index 설정 */
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.map-button:hover {
-  background-color: #0056b3;
 }
 </style>
