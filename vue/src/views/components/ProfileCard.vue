@@ -22,7 +22,7 @@
         <a
           href="javascript:;"
           class="btn btn-sm btn-info mb-0 d-none d-lg-block"
-          >Connect</a
+          >프로필</a
         >
         <a
           href="javascript:;"
@@ -33,7 +33,9 @@
         <a
           href="javascript:;"
           class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block"
-          >Message</a
+          
+          @click="logoutProcess"
+          >로그아웃</a
         >
         <a
           href="javascript:;"
@@ -45,7 +47,7 @@
     </div>
     <div class="card-body pt-0">
       <div class="row">
-        <div class="col">
+        <!-- <div class="col">
           <div class="d-flex justify-content-center">
             <div class="d-grid text-center">
               <span class="text-lg font-weight-bolder">22</span>
@@ -60,7 +62,7 @@
               <span class="text-sm opacity-8">Comments</span>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="text-center mt-4">
         <h5>
@@ -70,17 +72,9 @@
         <div class="h6 font-weight-300">
           <i class="ni location_pin mr-2"></i>{{ user.address }}
         </div>
-        <div class="h6 mt-4">
+        <div class="h6 mt-2">
           <i class="ni business_briefcase-24 mr-2"></i>{{ user.phone }}
         </div>
-        <argon-button
-          class="mt-4"
-          variant="gradient"
-          color="danger"
-          @click="logoutProcess"
-        >
-          로그아웃
-        </argon-button>
       </div>
     </div>
   </div>
