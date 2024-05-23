@@ -1,22 +1,25 @@
 <template>
   <div class="card">
-    <div class="card-header pb-0">
-      <h6>QnA 게시판</h6>
+    <div class="card-header py-3" >
+      <div class="row align-items-center">
+    <h4 class="col-lg-3">QnA 게시판</h4>
+
+    <div class="col-lg-4"></div>
+
+    <div class="col-lg-5">
+        <div class="row nog bg-light rounded-custom align-items-center">
+            <input type="text" name="word" v-model="keyword" placeholder="검색어를 입력하세요" class="rounded-custom custom-input col-lg-5 ms-6">
+            <select name="condition" v-model="option" class=" rounded-custom custom-select col-lg-2 mx-2">
+                <option value="title">제목</option>
+                <option value="name">글쓴이</option>
+            </select>
+            <input type="button" class=" rounded-custom btn btn-primary col-lg-2 m-2" value="검색" id="btnSearch" @click="searchQna">
+        </div>
     </div>
-    <div style="text-align: right;">
-      <div style="display: inline-block; margin-right: 20px;">
-        검색: <select name="condition" v-model ="option">
-          <option value="title" >제목</option>
-          <option value="name" >글쓴이</option>
-        </select>
-      </div>
-      <div style="display: inline-block; margin-right: 20px;">
-        <input type="text" name="word" v-model="keyword">
-      </div>
-      <div class="btn-group btn-center" style="display: inline-block;margin-right: 20px;">
-        <input type="button" class="btn btn-primary" value="검색" id="btnSearch" @click="searchQna" />
-      </div>
+</div>
+
     </div>
+   
 
 
     <div class="card-body px-0 pt-0 pb-2">
@@ -24,60 +27,74 @@
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                게시물
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 1%;">
+                번호 
               </th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                작성자
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 30%;">
+                제목
               </th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7">
                 상태
               </th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 30%;">
+                작성자
+              </th>
+              
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 2%;">
+                조회수
+              </th>
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7">
                 게시일
               </th>
-              <th class="text-secondary opacity-7"></th>
             </tr>
           </thead>
           <!-- Table Body -->
           <tbody>
-            <tr v-for="qna in qnaList" :key="qna.num">
+            <tr v-for="(qna,idx) in qnaList" :key="qna.num">
+              <td class = "number-column">
+                <div class="d-flex  justify-content-center">
+                  <p class="text-s font-weight-bold mt-3">{{ idx+1 }}</p>
+                </div>
+              </td>
+
               <td>
-                <div class="d-flex px-2 py-1">
-                  <div>
-                    <img src="../../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1" />
-                  </div>
+                <div class="d-flex px-2 py-1 ">
                   <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">
+                    <h6 class="mb-0 mx-2 text-s">
                       <RouterLink :to="{
                         name: 'QnaDetail',
                         params: { num: qna.num }
                       }">{{ qna.title }}
                       </RouterLink>
                     </h6>
-                    <p class="text-xs text-secondary mb-0">
-                      {{ qna.email }}
-                    </p>
                   </div>
                 </div>
               </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">{{ qna.writer }}</p>
-                <p class="text-xs text-secondary mb-0">{{ qna.region }}</p>
-              </td>
-              <td class="align-middle text-center text-sm">
+
+              <td class="align-middle text-center text-s">
                 <span
                   :class="['badge badge-sm', qna.status === 'unresolved' ? 'bg-gradient-secondary' : 'bg-gradient-success']">
                   {{ qna.status }}
                 </span>
               </td>
+
+              <td>
+                <div class="d-flex px-2 py-1 justify-content-center">
+                    <img src="../../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1" />
+                  <p class="text-s font-weight-bold mt-1">{{ qna.writer }}</p>
+                </div>
+              </td>
+
+              <td>
+                <div class="d-flex px-2 py-1 justify-content-center">
+                  <p class="text-s font-weight-bold mt-2">{{ qna.count }}</p>
+                </div>
+              </td>
+
               <td class="align-middle text-center">
                 <span class="text-secondary text-xs font-weight-bold">{{ qna.wdate }}</span>
               </td>
-              <td class="align-middle">
-                <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                  data-original-title="Edit user">Edit</a>
-              </td>
+
             </tr>
           </tbody>
         </table>
@@ -92,6 +109,31 @@
     </div>
   </div>
 </template>
+
+<style>
+.custom-select {
+    width: 70px; /* 원하는 크기로 설정 */
+    max-height: 35px; /* 원하는 크기로 설정 */
+  }
+
+.custom-input {
+  width: 250px; /* 원하는 크기로 설정 */
+  max-height: 35px; /* 원하는 크기로 설정 */
+}
+/* 번호 열에 수직선 추가 */
+td.number-column {
+    border-right: 1px solid #f0f0f0; /* 원하는 색상과 두께로 설정 */
+  }
+.nog {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.rounded-custom {
+        border-radius: 10px; /* 원하는 픽셀 값으로 설정 */
+    }
+
+</style>
 
 <script setup>
 import { onMounted, ref } from 'vue';
