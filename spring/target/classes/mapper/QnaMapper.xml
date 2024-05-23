@@ -5,8 +5,8 @@
 <mapper namespace="com.qna.mapper.QnaMapper">
 
 	<insert id="insert" parameterType="Qna">
-		insert into qna (writer, wdate, title, content, count, status)
-		values (#{writer}, now(), #{title}, #{content}, 0, "unresolved")
+		insert into qna (writer, wdate, title, content, count, status,writerId)
+		values (#{writer}, now(), #{title}, #{content}, 0, "처리중",#{writerId})
 	</insert>
 
 	<select id="selectAll" parameterType="map" resultType="Qna">
