@@ -10,7 +10,7 @@
 	
 	<update id="update" parameterType="User" >
 		update users set
-		name = #{name}, email = #{email}, address = #{address}, phone = #{phone}
+		name = #{name}, email = #{email}, address = #{address}, phone = #{phone}, dongCode = #{dongCode}
 		where id = #{id}
 	</update>
 	
@@ -19,8 +19,8 @@
 	</select>
 	
 	<insert id="register" parameterType="User">
- 		INSERT INTO users (id, name, password, email, joinDate, address, phone, role)
-    	VALUES (null, #{name}, #{password}, #{email}, #{joinDate}, #{address}, #{phone}, #{role})	</insert>
+ 		INSERT INTO users (id, name, password, email, joinDate, address, phone, role,dongCode)
+    	VALUES (null, #{name}, #{password}, #{email}, #{joinDate}, #{address}, #{phone}, #{role},#{dongCode})	</insert>
 	<select id="findByEmail" parameterType="String" resultType="User">
     SELECT * FROM users WHERE email = #{email}
 	</select>

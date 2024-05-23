@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
             user.setPhone(signupRequestDto.getPhone());
             user.setRole("user");
             user.setJoinDate(new Timestamp(new Date().getTime()));
-
+            user.setDongCode(signupRequestDto.getDongCode());
             userMapper.register(user);
         } catch (SQLException e) {
             throw new RuntimeException("회원가입 중 오류가 발생했습니다.", e);

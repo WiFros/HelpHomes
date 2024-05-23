@@ -8,8 +8,10 @@ import AppFooter from "@/examples/PageLayout/Footer.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 //import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
-const body = document.getElementsByTagName("body")[0];
+import { useToast } from "vue-toastification";
 
+const body = document.getElementsByTagName("body")[0];
+const toast = useToast();
 const store = useStore();
 const router = useRouter(); // 추가된 부분
 
@@ -33,11 +35,14 @@ const email = ref("");
 const password = ref("");
 const address = ref("");
 const phone = ref("");
-
+const dongCode = ref("");
 function handleAddressClick() {
   new daum.Postcode({
     oncomplete: function(data) {
-      address.value = data.address;
+      console.log('Address data:', data);
+      address.value = data.jibunAddress;
+      dongCode.value = data.bcode;
+      console.log('Address:', dongCode.value, address.value);
     }
   }).open();
 }
@@ -48,7 +53,8 @@ function register() {
     email: email.value,
     password: password.value,
     address: address.value,
-    phone: phone.value
+    phone: phone.value,
+    dongCode: dongCode.value
   };
 
   console.log('Signup data:', signupData); // 회원가입 데이터 로그 출력
@@ -56,9 +62,11 @@ function register() {
   // 회원가입 API 호출
   store.dispatch('signup', signupData).then(() => {
     console.log('회원가입 성공');
+    toast.success('회원가입 성공');
     router.push('/signin'); // 회원가입 후 로그인 페이지로 이동
   }).catch(error => {
     alert('회원가입 실패: ' + error.response.data);
+    toast.error('회원가입 실패');
     console.error('회원가입 실패:', error);
   });
 }
@@ -122,7 +130,8 @@ function register() {
                   placeholder="비밀번호"
                   aria-label="Password"
                 />
-                <argon-input
+                <input
+                  class="form-control"
                   v-model="address"
                   id="address"
                   type="text"
@@ -160,3 +169,8 @@ function register() {
   </main>
   <app-footer />
 </template>
+<style>
+  #address {
+    margin-bottom: 1rem;
+  }
+</style>

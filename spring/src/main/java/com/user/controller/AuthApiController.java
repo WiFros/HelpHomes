@@ -59,6 +59,8 @@ public class AuthApiController {
             currentUser.setName(user.getName());
             currentUser.setEmail(user.getEmail());
             currentUser.setAddress(user.getAddress());
+            System.out.println(currentUser.getDongCode() + " " + user.getDongCode());
+            currentUser.setDongCode(user.getDongCode());
             currentUser.setPhone(user.getPhone());
             userService.update(currentUser);
 

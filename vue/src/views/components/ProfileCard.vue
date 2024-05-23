@@ -89,7 +89,6 @@ import { useRouter } from 'vue-router';
 const store = useStore();
 const router = useRouter();
 const user = computed(() => store.getters.getUser);
-
 function logoutProcess() {
   store.dispatch('logout').then(() => {
     router.push('/dashboard-default');
