@@ -1,24 +1,24 @@
 <script setup>
-import { useRouter } from 'vue-router';
-import { selectOne, remove, update, updateAnswer } from '@/api/qna.js';
-import QnABoard from './components/QnABoard.vue';
+import { useRouter } from "vue-router";
+import { selectOne, remove, update, updateAnswer } from "@/api/qna.js";
+import QnABoard from "./components/QnABoard.vue";
 
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
 
 const store = useStore();
 
 const user = computed(() => store.state.user);
 
-const num = ref('');
-const writer = ref('');
-const count = ref('');
-const wdate = ref('');
-const title = ref('');
-const content = ref('');
-const answer = ref('');
-const status = ref('');
+const num = ref("");
+const writer = ref("");
+const count = ref("");
+const wdate = ref("");
+const title = ref("");
+const content = ref("");
+const answer = ref("");
+const status = ref("");
 const isAnswerable = ref(false);
 
 const router = useRouter();
@@ -27,26 +27,26 @@ const router = useRouter();
 const isModify = ref(false);
 
 function hideEditBtn(writerId) {
-  const editBtn = document.querySelector('.editBtn');
+  const editBtn = document.querySelector(".editBtn");
 
   if (user.value) {
     if (writerId === user.value.id) {
-      editBtn.style.display = 'block';
+      editBtn.style.display = "block";
     } else {
-      editBtn.style.display = 'none';
+      editBtn.style.display = "none";
     }
   }
 }
 
 function hideAnswerBtn() {
-  const answerBtn = document.querySelector('.answerBtn');
+  const answerBtn = document.querySelector(".answerBtn");
 
   if (user.value) {
-    if (user.value.role === 'admin') {
-      answerBtn.style.display = 'block';
+    if (user.value.role === "admin") {
+      answerBtn.style.display = "block";
       isAnswerable.value = true;
     } else {
-      answerBtn.style.display = 'none';
+      answerBtn.style.display = "none";
       isAnswerable.value = false;
     }
   }
@@ -80,12 +80,12 @@ function qnaDelete() {
     num.value,
     (response) => {
       if (response.data.code === 200) {
-        alert('삭제 완료!');
+        alert("삭제 완료!");
       } else {
-        alert('오류 발생!');
+        alert("오류 발생!");
       }
 
-      router.push({ name: 'Qna' });
+      router.push({ name: "/qna" });
     },
     (error) => {
       console.log(error);
@@ -104,12 +104,12 @@ function qnaUpdate() {
     update_qna,
     (response) => {
       if (response.data.code === 200) {
-        alert('수정 완료!');
+        alert("수정 완료!");
       } else {
-        alert('오류 발생!');
+        alert("오류 발생!");
       }
 
-      router.push({ name: 'Qna' });
+      router.push({ name: "/qna" });
     },
     (error) => {
       console.log(error);
@@ -127,12 +127,12 @@ function qnaAnswer() {
     answer_qna,
     (response) => {
       if (response.data.code === 200) {
-        alert('답변 완료!');
+        alert("답변 완료!");
       } else {
-        alert('오류 발생!');
+        alert("오류 발생!");
       }
 
-      router.push({ name: 'Qna' });
+      router.push({ name: "/qna" });
     },
     (error) => {
       console.log(error);
@@ -142,14 +142,14 @@ function qnaAnswer() {
 
 function enableEditing() {
   isModify.value = !isModify.value;
-  document.getElementById('title').readOnly = isModify.value;
-  document.getElementById('content').readOnly = isModify.value;
-  var updateButton = document.getElementById('btnUpdateComplete');
+  document.getElementById("title").readOnly = isModify.value;
+  document.getElementById("content").readOnly = isModify.value;
+  var updateButton = document.getElementById("btnUpdateComplete");
   console.log(user);
   if (isModify.value) {
-    updateButton.style.display = 'none'; // 수정중일 때 버튼 표시
+    updateButton.style.display = "none"; // 수정중일 때 버튼 표시
   } else {
-    updateButton.style.display = 'inline-block'; // 수정중이 아닐 때 버튼 숨김
+    updateButton.style.display = "inline-block"; // 수정중이 아닐 때 버튼 숨김
   }
 }
 </script>
@@ -170,83 +170,83 @@ function enableEditing() {
           <div class="row">
             <div class="form-group col-lg-3">
               <input
-                type="text"
-                class="form-control text-center"
                 id="writer"
                 v-model="writer"
+                class="form-control text-center"
                 readonly
+                type="text"
               />
             </div>
 
             <div class="form-group col-lg-5 mx-4">
               <input
-                type="text"
-                class="form-control text-center"
                 id="wdate"
                 v-model="wdate"
+                class="form-control text-center"
                 readonly
+                type="text"
               />
             </div>
 
             <div class="form-group col-lg-2">
               <input
-                type="text"
-                class="form-control text-center"
                 id="count"
                 v-model="count"
+                class="form-control text-center"
                 readonly
+                type="text"
               />
             </div>
           </div>
 
           <div class="form-group">
             <input
-              type="text"
-              class="form-control"
               id="title"
               v-model="title"
+              class="form-control"
               readonly
+              type="text"
             />
           </div>
 
           <div class="form-group">
             <textarea
-              class="form-control"
               id="content"
               v-model="content"
-              style="height: 150px"
+              class="form-control"
               readonly
+              style="height: 150px"
             ></textarea>
           </div>
           <div class="editBtn" style="display: none">
             <div class="btn-group">
               <input
-                type="button"
-                class="btn btn-danger"
-                value="삭제"
                 id="btnDelete"
+                class="btn btn-danger"
+                type="button"
+                value="삭제"
                 @click="qnaDelete()"
               />
             </div>
 
             <div class="btn-group mx-3">
               <input
-                type="button"
-                class="btn btn-primary"
-                value="수정 하기"
                 id="btnUpdate"
+                class="btn btn-primary"
+                type="button"
+                value="수정 하기"
                 @click="enableEditing()"
               />
             </div>
 
             <div class="btn-group">
               <input
-                type="button"
-                class="btn btn-primary"
-                value="수정 완료"
                 id="btnUpdateComplete"
-                @click="qnaUpdate()"
+                class="btn btn-primary"
                 style="display: none"
+                type="button"
+                value="수정 완료"
+                @click="qnaUpdate()"
               />
             </div>
           </div>
@@ -271,22 +271,22 @@ function enableEditing() {
         <div class="col card-body pt-0">
           <div class="form-group">
             <textarea
-              class="form-control"
               id="answerContent"
               v-model="answer"
-              style="height: 150px"
               :readonly="!isAnswerable"
+              class="form-control"
+              style="height: 150px"
             ></textarea>
           </div>
 
           <div class="btn-group">
             <input
-              type="button"
-              class="btn btn-primary answerBtn"
-              value="답변하기"
               id="btnAnswer"
-              @click="qnaAnswer()"
+              class="btn btn-primary answerBtn"
               style="display: none"
+              type="button"
+              value="답변하기"
+              @click="qnaAnswer()"
             />
           </div>
         </div>
