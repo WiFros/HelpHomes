@@ -50,10 +50,10 @@ const getRoute = () => {
         <sidenav-item
           to="/DealDetail"
           :class="getRoute() === 'signup' ? 'active' : ''"
-          :navText="isRTL ? 'اشتراك' : '아파트검색'"
+          :navText="isRTL ? 'اشتراك' : '우리동네 매물'"
         >
           <template v-slot:icon>
-            <i class="ni ni-collection text-info text-sm opacity-10"></i>
+            <i class="fas fa-binoculars text-danger text-sm opacity-10"></i>
           </template>
         </sidenav-item>
       </li>
