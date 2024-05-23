@@ -16,5 +16,6 @@ public interface QnaMapper {
 	int delete(Integer num) throws SQLException;//해당 번호의 글 삭제
 	public int countUp(Integer num) throws SQLException;//조회수 증가
 	int modify(Qna b) throws SQLException;
+	int answer(Qna b) throws SQLException;
 	List<Qna> search(Map<String, String> map);
 }

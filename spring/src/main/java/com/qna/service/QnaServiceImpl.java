@@ -49,6 +49,12 @@ public class QnaServiceImpl implements QnaService{
 	}
 
 	@Override
+	public int answer(Qna b) throws SQLException {
+		return mapper.answer(b);
+	}
+
+
+	@Override
 	public List<Qna> search(String condition, String word) {
 		Map<String, String> map = new HashMap<>();
 		map.put("condition", condition);

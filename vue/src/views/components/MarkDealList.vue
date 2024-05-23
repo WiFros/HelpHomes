@@ -54,16 +54,18 @@
                 </td>
 
                 <td class="align-middle text-center">
-                  
-                <RouterLink
-                  :to="{
-                    name: 'DealDetail',
-                    params: { aptCode: markApt.aptCode, floor: 1}
-                  }"
-                >
-                  <span class="text-dark text-xs font-weight-bold">
-                    <i class="fas fa-search" style="font-size: 20px"></i>
-                  </span></RouterLink>
+                  <RouterLink
+                    :to="{
+                      name: 'DealDetail',
+                      params: { aptCode: markApt.aptCode, floor: 1 },
+                    }"
+                  >
+                    <span class="text-dark text-xs font-weight-bold">
+                      <i
+                        class="fas fa-search"
+                        style="font-size: 20px"
+                      ></i> </span
+                  ></RouterLink>
                 </td>
 
                 <td class="align-middle text-center">
@@ -71,7 +73,7 @@
                     <i
                       class="fas fa-map-marker-alt"
                       style="font-size: 24px"
-                      @click="showRocation(markApt.lng,markApt.lat)"
+                      @click="showRocation(markApt.lng, markApt.lat)"
                     ></i>
                   </span>
                 </td>
@@ -88,7 +90,7 @@
 import { useStore } from 'vuex';
 
 import { selectAllMarkApart } from '../../api/aptDeal';
-import {  computed, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const store = useStore();
 
@@ -96,9 +98,7 @@ const user = computed(() => store.state.user);
 
 const markAptList = ref([]);
 
-
 const emits = defineEmits(['clickRocation']);
-
 
 watch(
   () => user.value,
@@ -116,22 +116,20 @@ watch(
           console.log(err);
         },
       );
-    }
-    else {
-      markAptList.value.length = 0;
+    } else {
+      markAptList.value = [];
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
-function showRocation(lng,lat) {
+function showRocation(lng, lat) {
   const params = {
-    lng: lng, 
-    lat: lat
+    lng: lng,
+    lat: lat,
   };
-  emits('clickRocation',params);
+  emits('clickRocation', params);
 }
-
 </script>
 
 <style scoped>

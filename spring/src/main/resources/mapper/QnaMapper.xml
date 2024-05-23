@@ -33,6 +33,12 @@
 		where num = #{num}
 	</update>
 	
+	<update id="answer" parameterType="qna">
+		update qna
+		set status = "답변완료", answer = #{answer} , adate=now()
+		where num = #{num}
+	</update>
+
 	<delete id="delete" parameterType="int">
 		delete from qna
 		where num = #{num}

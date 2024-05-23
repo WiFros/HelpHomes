@@ -116,6 +116,29 @@ public class QnaRestController {
 						service.modify(dto)));
 	}
 
+
+	@Operation(summary = "질문 답변", description = "QnA에 답변합니다.")
+	@PutMapping("/answer/{num}")
+	public ResponseEntity<ResultDto<Integer>> answerProcess(@PathVariable("num") Integer num,
+			@RequestBody Qna dto,
+			HttpSession session) throws SQLException {
+		// 세션 확인 로직 추가 필요
+		// if (!checkAdmin(session)) {
+		// return ResponseEntity.status(403)
+		// .body(new ResultDto<>(
+		// 403,
+		// "access only admin",
+		// null
+		// ));
+		// }
+		dto.setNum(num);
+		return ResponseEntity.status(200)
+				.body(new ResultDto<>(
+						200,
+						"ok",
+						service.answer(dto)));
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ModelAndView errorProcess() {
 		ModelAndView mv = new ModelAndView();

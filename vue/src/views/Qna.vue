@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { selectOne, remove, update } from '@/api/qna.js';
+import { selectOne, remove, update, updateAnswer } from '@/api/qna.js';
 import QnABoard from './components/QnABoard.vue';
 
 import { useStore } from 'vuex';
@@ -17,11 +17,40 @@ const count = ref('');
 const wdate = ref('');
 const title = ref('');
 const content = ref('');
+const answer = ref('');
+const status = ref('');
+const isAnswerable = ref(false);
 
 const router = useRouter();
 
 // 파라미터 받기
 const isModify = ref(false);
+
+function hideEditBtn(writerId) {
+  const editBtn = document.querySelector('.editBtn');
+
+  if (user.value) {
+    if (writerId === user.value.id) {
+      editBtn.style.display = 'block';
+    } else {
+      editBtn.style.display = 'none';
+    }
+  }
+}
+
+function hideAnswerBtn() {
+  const answerBtn = document.querySelector('.answerBtn');
+
+  if (user.value) {
+    if (user.value.role === 'admin') {
+      answerBtn.style.display = 'block';
+      isAnswerable.value = true;
+    } else {
+      answerBtn.style.display = 'none';
+      isAnswerable.value = false;
+    }
+  }
+}
 
 function readOne(selectNum) {
   selectOne(
@@ -34,6 +63,11 @@ function readOne(selectNum) {
       writer.value = result.writer;
       count.value = result.count;
       wdate.value = result.wdate;
+      answer.value = result.answer;
+      status.value = result.status;
+      console.log(user.value);
+      hideEditBtn(result.writerId);
+      hideAnswerBtn();
     },
     (error) => {
       console.log(error);
@@ -83,6 +117,29 @@ function qnaUpdate() {
   );
 }
 
+function qnaAnswer() {
+  const answer_qna = {
+    num: num.value,
+    answer: answer.value,
+  };
+
+  updateAnswer(
+    answer_qna,
+    (response) => {
+      if (response.data.code === 200) {
+        alert('답변 완료!');
+      } else {
+        alert('오류 발생!');
+      }
+
+      router.push({ name: 'Qna' });
+    },
+    (error) => {
+      console.log(error);
+    },
+  );
+}
+
 function enableEditing() {
   isModify.value = !isModify.value;
   document.getElementById('title').readOnly = isModify.value;
@@ -114,37 +171,27 @@ function enableEditing() {
             <div class="form-group col-lg-3">
               <input
                 type="text"
-                class="form-control"
-                id="num"
-                v-model="num"
-                readonly
-              />
-            </div>
-
-            <div class="form-group col-lg-3">
-              <input
-                type="text"
-                class="form-control"
+                class="form-control text-center"
                 id="writer"
                 v-model="writer"
                 readonly
               />
             </div>
 
-            <div class="form-group col-lg-3">
+            <div class="form-group col-lg-5 mx-4">
               <input
                 type="text"
-                class="form-control"
+                class="form-control text-center"
                 id="wdate"
                 v-model="wdate"
                 readonly
               />
             </div>
 
-            <div class="form-group col-lg-3">
+            <div class="form-group col-lg-2">
               <input
                 type="text"
-                class="form-control"
+                class="form-control text-center"
                 id="count"
                 v-model="count"
                 readonly
@@ -171,7 +218,7 @@ function enableEditing() {
               readonly
             ></textarea>
           </div>
-          <div style="display: none">
+          <div class="editBtn" style="display: none">
             <div class="btn-group">
               <input
                 type="button"
@@ -209,59 +256,38 @@ function enableEditing() {
       <div class="card">
         <div class="card-header pb-3">
           <h5>답변</h5>
+          <span
+            :class="[
+              'badge badge-sm',
+              status === '처리중'
+                ? 'bg-gradient-secondary'
+                : 'bg-gradient-success',
+            ]"
+          >
+            {{ status }}
+          </span>
         </div>
 
         <div class="col card-body pt-0">
-          <div class="row">
-            <div class="form-group col-lg-3">
-              <input
-                type="text"
-                class="form-control"
-                id="num"
-                v-model="num"
-                readonly
-              />
-            </div>
-
-            <div class="form-group col-lg-3">
-              <input
-                type="text"
-                class="form-control"
-                id="writer"
-                v-model="writer"
-                readonly
-              />
-            </div>
-
-            <div class="form-group col-lg-3">
-              <input
-                type="text"
-                class="form-control"
-                id="wdate"
-                v-model="wdate"
-                readonly
-              />
-            </div>
-
-            <div class="form-group col-lg-3">
-              <input
-                type="text"
-                class="form-control"
-                id="count"
-                v-model="count"
-                readonly
-              />
-            </div>
-          </div>
-
           <div class="form-group">
             <textarea
               class="form-control"
-              id="content"
-              v-model="content"
+              id="answerContent"
+              v-model="answer"
               style="height: 150px"
-              readonly
+              :readonly="!isAnswerable"
             ></textarea>
+          </div>
+
+          <div class="btn-group">
+            <input
+              type="button"
+              class="btn btn-primary answerBtn"
+              value="답변하기"
+              id="btnAnswer"
+              @click="qnaAnswer()"
+              style="display: none"
+            />
           </div>
         </div>
       </div>

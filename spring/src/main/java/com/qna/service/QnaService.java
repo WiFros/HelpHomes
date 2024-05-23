@@ -13,6 +13,7 @@ public interface QnaService {
 	int insert(Qna b) throws SQLException;//새글 추가
 	int delete(Integer num) throws SQLException;//해당 번호의 글 삭제
 	int modify(Qna b) throws SQLException;
+	int answer(Qna b) throws SQLException;
 	List<Qna> search(String condition, String word);
 
 }
