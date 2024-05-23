@@ -3,7 +3,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import {selectOne,remove,update} from "@/api/qna.js";
-
+import DetailQnABoard from './components/DetailQnABoard.vue';
 const num = ref("");
 const writer = ref("");
 const count = ref("");
@@ -97,56 +97,115 @@ function enableEditing() {
 </script>
 
 <template>
-  <div class="card mt-4 mx-4">
-      <div class="card-header pb-3">
-        <h2>Q&A 게시판</h2>
-      </div>
 
-      <div class="col card-body pt-0">
-        <div class="form-group">
-          <label>번호:</label> 
-          <input type="text" class="form-control" id="num" v-model="num" readonly> 
+  <div class ="row mt-4 container-fluid">
+    <div class="col-lg-4 ">
+          <DetailQnABoard />
+    </div>
+
+    <div class="col-lg-8 ">
+      <div class="card mb-3">
+        <div class="card-header pb-3">
+          <h5>Q&A 게시판</h5>
         </div>
 
-        <div class="form-group">
-          <label>글쓴이:</label> 
-          <input type="text" class="form-control" id="writer" v-model="writer" readonly> 
-        </div>
+        <div class="col card-body pt-0">
+          <div class ="row">
+            <div class="form-group col-lg-3">
+ 
+              <input type="text" class="form-control" id="num" v-model="num" readonly> 
+            </div>
 
-        <div class="form-group">
-          <label>날짜:</label> 
-          <input type="text" class="form-control" id="wdate" v-model="wdate" readonly> 
-        </div>
+            <div class="form-group  col-lg-3">
+ 
+              <input type="text" class="form-control" id="writer" v-model="writer" readonly> 
+            </div>
 
-        <div class="form-group">
-          <label>조회수:</label> 
-          <input type="text" class="form-control" id="count" v-model="count" readonly> 
-        </div>
+            <div class="form-group  col-lg-3">
+ 
+              <input type="text" class="form-control" id="wdate" v-model="wdate" readonly> 
+            </div>
 
-        <div class="form-group">
-          <label>제목:</label> 
-          <input type="text" class="form-control" id="title" v-model="title" readonly>
-        </div>
-
-        <div class="form-group">
-          <label for="content">글 내용:</label>
-          <textarea class="form-control" id="content" v-model="content" style=" height: 200px;" readonly></textarea>
-        </div>
-
-          <div class="btn-group">
-              <input type="button" class="btn btn-danger" value="삭제" id="btnDelete" @click="qnaDelete()" /> 
+            <div class="form-group  col-lg-3">
+ 
+              <input type="text" class="form-control" id="count" v-model="count" readonly> 
+            </div>
           </div>
 
-          <div class="btn-group mx-3">
-              <input type="button" class="btn btn-primary" value="수정 하기" id="btnUpdate" @click="enableEditing()" /> 
+          <div class="form-group"> 
+            <input type="text" class="form-control" id="title" v-model="title" readonly>
           </div>
 
-          <div class="btn-group">
-              <input type="button" class="btn btn-primary" value="수정 완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
+          <div class="form-group">
+          
+            <textarea class="form-control" id="content" v-model="content" style=" height: 200px;" readonly></textarea>
           </div>
 
-      </div>
+            <div class="btn-group">
+                <input type="button" class="btn btn-danger" value="삭제" id="btnDelete" @click="qnaDelete()" /> 
+            </div>
 
+            <div class="btn-group mx-3">
+                <input type="button" class="btn btn-primary" value="수정 하기" id="btnUpdate" @click="enableEditing()" /> 
+            </div>
+
+            <div class="btn-group">
+                <input type="button" class="btn btn-primary" value="수정 완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
+            </div>
+          </div>
+      </div> 
+
+      <div class="card">
+        <div class="card-header pb-3">
+          <h5>Q&A 게시판</h5>
+        </div>
+
+        <div class="col card-body pt-0">
+          <div class ="row">
+            <div class="form-group col-lg-3">
+ 
+              <input type="text" class="form-control" id="num" v-model="num" readonly> 
+            </div>
+
+            <div class="form-group  col-lg-3">
+ 
+              <input type="text" class="form-control" id="writer" v-model="writer" readonly> 
+            </div>
+
+            <div class="form-group  col-lg-3">
+ 
+              <input type="text" class="form-control" id="wdate" v-model="wdate" readonly> 
+            </div>
+
+            <div class="form-group  col-lg-3">
+ 
+              <input type="text" class="form-control" id="count" v-model="count" readonly> 
+            </div>
+          </div>
+
+          <div class="form-group"> 
+            <input type="text" class="form-control" id="title" v-model="title" readonly>
+          </div>
+
+          <div class="form-group">
+          
+            <textarea class="form-control" id="content" v-model="content" style=" height: 200px;" readonly></textarea>
+          </div>
+
+            <div class="btn-group">
+                <input type="button" class="btn btn-danger" value="삭제" id="btnDelete" @click="qnaDelete()" /> 
+            </div>
+
+            <div class="btn-group mx-3">
+                <input type="button" class="btn btn-primary" value="수정 하기" id="btnUpdate" @click="enableEditing()" /> 
+            </div>
+
+            <div class="btn-group">
+                <input type="button" class="btn btn-primary" value="수정 완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
+            </div>
+          </div>
+      </div> 
+    </div>
   </div>
 </template>
 

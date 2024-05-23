@@ -7,13 +7,13 @@
     <div class="col-lg-4"></div>
 
     <div class="col-lg-5">
-        <div class="row nog bg-light rounded-custom align-items-center">
-            <input type="text" name="word" v-model="keyword" placeholder="검색어를 입력하세요" class="rounded-custom custom-input col-lg-5 ms-6">
-            <select name="condition" v-model="option" class=" rounded-custom custom-select col-lg-2 mx-2">
+        <div class="row nog rounded-custom align-items-center">
+            <input type="text" name="word" v-model="keyword" placeholder="검색어를 입력하세요" class="rounded-custom custom-input col-lg-5 ms-9">
+            <select name="condition" v-model="option" class=" rounded-custom custom-select col-lg-3 mx-2">
                 <option value="title">제목</option>
                 <option value="name">글쓴이</option>
             </select>
-            <input type="button" class=" rounded-custom btn btn-primary col-lg-2 m-2" value="검색" id="btnSearch" @click="searchQna">
+            <input type="button" class="custom-button rounded-custom btn btn-primary col-lg-2 m-2" value="검색" id="btnSearch" @click="searchQna">
         </div>
     </div>
 </div>
@@ -30,20 +30,20 @@
               <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 1%;">
                 번호 
               </th>
-              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 30%;">
-                제목
-              </th>
-              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7">
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 7%;">
                 상태
               </th>
               <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 30%;">
+                제목
+              </th>
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 10%;">
                 작성자
               </th>
               
-              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 2%;">
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 5%;">
                 조회수
               </th>
-              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7">
+              <th class="text-center text-uppercase text-dark text-s font-weight-bolder opacity-7" style="width: 10%;">
                 게시일
               </th>
             </tr>
@@ -57,42 +57,42 @@
                 </div>
               </td>
 
-              <td>
-                <div class="d-flex px-2 py-1 ">
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 mx-2 text-s">
-                      <RouterLink :to="{
-                        name: 'QnaDetail',
-                        params: { num: qna.num }
-                      }">{{ qna.title }}
-                      </RouterLink>
-                    </h6>
-                  </div>
-                </div>
-              </td>
-
-              <td class="align-middle text-center text-s">
+              <td class="number-column align-middle text-center text-s">
                 <span
                   :class="['badge badge-sm', qna.status === 'unresolved' ? 'bg-gradient-secondary' : 'bg-gradient-success']">
                   {{ qna.status }}
                 </span>
               </td>
 
-              <td>
+
+              <td class = "number-column">
+                <RouterLink :to="{
+                        name: 'QnaDetail',
+                        params: { num: qna.num }
+                      }">
+
+                  <div class="d-flex justify-content-center">
+                    <h6 class="mb-0 mx-2 text-s">{{ qna.title }}
+                    </h6>
+                  </div>
+              </RouterLink>
+              </td>
+
+              <td class = "number-column">
                 <div class="d-flex px-2 py-1 justify-content-center">
                     <img src="../../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1" />
                   <p class="text-s font-weight-bold mt-1">{{ qna.writer }}</p>
                 </div>
               </td>
 
-              <td>
+              <td class = "number-column">
                 <div class="d-flex px-2 py-1 justify-content-center">
                   <p class="text-s font-weight-bold mt-2">{{ qna.count }}</p>
                 </div>
               </td>
 
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ qna.wdate }}</span>
+              <td class="align-middle text-center number-column">
+                <span class="text-secondary text-s font-weight-bold">{{ qna.wdate }}</span>
               </td>
 
             </tr>
@@ -119,6 +119,11 @@
 .custom-input {
   width: 250px; /* 원하는 크기로 설정 */
   max-height: 35px; /* 원하는 크기로 설정 */
+}
+
+.custom-button {
+    width: 80px; /* 원하는 크기로 설정 */
+  max-height: 50px; /* 원하는 크기로 설정 */
 }
 /* 번호 열에 수직선 추가 */
 td.number-column {
