@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { insert } from "@/api/qna";
-
+import { useToast } from "vue-toastification";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -12,7 +12,7 @@ const writer = ref("");
 const title = ref("");
 const content = ref("");
 // const customers = ref([]) //전체 데이터 담을 배열
-
+const toast = useToast();
 const router = useRouter(); //setup단계에서 찾아놓기
 
 function qnaInsert() {
@@ -27,7 +27,7 @@ function qnaInsert() {
 
   insert(new_qna);
 
-  alert("등록 되었습니다!");
+  toast.success("Q&A 등록 완료!");
 
   writer.value = "";
   title.value = "";

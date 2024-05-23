@@ -8,11 +8,12 @@ import ArgonButton from "@/components/ArgonButton.vue";
 
 // login 용 import
 import { login } from "@/api/user.js";
-import toast from "bootstrap/js/src/toast";
+import { useToast } from "vue-toastification";
+
 const router = useRouter();
 const email = ref("");
 const password = ref("");
-
+const toast = useToast();
 function loginProcess() {
   const login_user = {
     email: email.value,

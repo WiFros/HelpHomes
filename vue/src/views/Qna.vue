@@ -6,9 +6,10 @@ import QnABoard from "./components/QnABoard.vue";
 import { useStore } from "vuex";
 
 import { computed, ref } from "vue";
+import { useToast } from "vue-toastification";
 
 const store = useStore();
-
+const toast = useToast();
 const user = computed(() => store.state.user);
 
 const num = ref("");
@@ -80,9 +81,9 @@ function qnaDelete() {
     num.value,
     (response) => {
       if (response.data.code === 200) {
-        alert("삭제 완료!");
+        toast.success("삭제 완료!");
       } else {
-        alert("오류 발생!");
+        toast.error("오류 발생!");
       }
 
       router.push({ name: "/qna" });
@@ -104,9 +105,9 @@ function qnaUpdate() {
     update_qna,
     (response) => {
       if (response.data.code === 200) {
-        alert("수정 완료!");
+        toast.success("수정 완료!");
       } else {
-        alert("오류 발생!");
+        toast.error("오류 발생!");
       }
 
       router.push({ name: "/qna" });
@@ -127,9 +128,9 @@ function qnaAnswer() {
     answer_qna,
     (response) => {
       if (response.data.code === 200) {
-        alert("답변 완료!");
+        toast.success("답변 완료!");
       } else {
-        alert("오류 발생!");
+        toast.error("오류 발생!");
       }
 
       router.push({ name: "/qna" });
