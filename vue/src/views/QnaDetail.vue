@@ -3,7 +3,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import {selectOne,remove,update} from "@/api/qna.js";
-import DetailQnABoard from './components/DetailQnABoard.vue';
+import QnABoard from './components/QnABoard.vue';
 const num = ref("");
 const writer = ref("");
 const count = ref("");
@@ -99,14 +99,15 @@ function enableEditing() {
 <template>
 
   <div class ="row mt-4 container-fluid">
-    <div class="col-lg-4 ">
-          <DetailQnABoard />
+
+    <div class="col-lg-7 ">
+      <QnABoard />
     </div>
 
-    <div class="col-lg-8 ">
+    <div class="col-lg-5 ">
       <div class="card mb-3">
         <div class="card-header pb-3">
-          <h5>Q&A 게시판</h5>
+          <h5>질문</h5>
         </div>
 
         <div class="col card-body pt-0">
@@ -138,7 +139,7 @@ function enableEditing() {
 
           <div class="form-group">
           
-            <textarea class="form-control" id="content" v-model="content" style=" height: 200px;" readonly></textarea>
+            <textarea class="form-control" id="content" v-model="content" style=" height: 150px;" readonly></textarea>
           </div>
 
             <div class="btn-group">
@@ -157,7 +158,7 @@ function enableEditing() {
 
       <div class="card">
         <div class="card-header pb-3">
-          <h5>Q&A 게시판</h5>
+          <h5>답변</h5>
         </div>
 
         <div class="col card-body pt-0">
@@ -183,26 +184,12 @@ function enableEditing() {
             </div>
           </div>
 
-          <div class="form-group"> 
-            <input type="text" class="form-control" id="title" v-model="title" readonly>
-          </div>
 
           <div class="form-group">
           
-            <textarea class="form-control" id="content" v-model="content" style=" height: 200px;" readonly></textarea>
+            <textarea class="form-control" id="content" v-model="content" style=" height: 150px;" readonly></textarea>
           </div>
 
-            <div class="btn-group">
-                <input type="button" class="btn btn-danger" value="삭제" id="btnDelete" @click="qnaDelete()" /> 
-            </div>
-
-            <div class="btn-group mx-3">
-                <input type="button" class="btn btn-primary" value="수정 하기" id="btnUpdate" @click="enableEditing()" /> 
-            </div>
-
-            <div class="btn-group">
-                <input type="button" class="btn btn-primary" value="수정 완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
-            </div>
           </div>
       </div> 
     </div>
