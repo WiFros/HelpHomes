@@ -1,6 +1,12 @@
+<template>
+  <div id="map-container">
+    <div id="map" class="rounded-map"></div>
+    <button class="map-button" @click="handleButtonClick">지도 버튼</button>
+  </div>
+</template>
+
 <script>
 // service에서 props 로 받아온 아파트 리스트를 출력
-
 import { toRaw } from "vue";
 /* global kakao */
 
@@ -32,7 +38,6 @@ export default {
       infowindow: null,
     };
   },
-
 
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -103,62 +108,43 @@ export default {
 
         toRaw(this.map).setBounds(bounds);
       }
+    },
+    handleButtonClick() {
+      alert('지도 버튼 클릭됨!');
+      // 여기서 추가적인 로직을 구현할 수 있습니다.
     }
   },
 };
-
-// methods: {
-//     initMap() {
-//       const container = document.getElementById("map");
-//       const options = {
-//         center: new kakao.maps.LatLng(33.450701, 126.570667),
-//         level: 5,
-//       };
-
-//       //지도 객체를 등록합니다.
-//       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-//       this.map = new kakao.maps.Map(container, options);
-//     },
-//     displayMarker(markerPositions) {
-//       if (this.markers.length > 0) {
-//         this.markers.forEach((marker) => marker.setMap(null));
-//       }
-
-//       const positions = markerPositions.map(
-//         (position) => new kakao.maps.LatLng(...position)
-//       );
-
-//       if (positions.length > 0) {
-//         this.markers = positions.map(
-//           (position) =>
-//             new kakao.maps.Marker({
-//               map: toRaw(this.map),
-//               position,
-//             })
-//         );
-
-//         const bounds = positions.reduce(
-//           (bounds, latlng) => bounds.extend(latlng),
-//           new kakao.maps.LatLngBounds()
-//         );
-
-//         toRaw(this.map).setBounds(bounds);
-//       }
-//     },
-//   },
-
-
 </script>
 
-<template>
-  <div id="map" class="rounded-map"></div>
-</template>
-
 <style scoped>
-.rounded-map {
+#map-container {
+  position: relative;
   width: 100%;
-  height: 630px; /* 원하는 높이 값으로 조정 */
+  height: 630px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
   border-radius: 20px;
   overflow: hidden;
 }
-</style> 
+
+.map-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000; /* 지도 위에 표시되도록 높은 z-index 설정 */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.map-button:hover {
+  background-color: #0056b3;
+}
+</style>

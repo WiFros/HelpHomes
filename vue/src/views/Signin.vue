@@ -98,13 +98,14 @@ import Navbar from "@/examples/PageLayout/Navbar.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
+import { useToast } from "vue-toastification";
 
 // login 용 import
 import { login } from "../api/user.js";
 
 const email = ref("");
 const password = ref("");
-
+const toast = useToast();
 const store = useStore();
 const router = useRouter();
 
@@ -127,6 +128,7 @@ function loginProcess() {
         store.dispatch('login', { token }).then(() => {
           return store.dispatch('fetchUser', token);
         }).then(() => {
+          toast.success('로그인 성공');
           router.push('/dashboard-default');  // 로그인 후 이동
         }).catch(error => {
           console.error('Error fetching user:', error);
@@ -138,7 +140,7 @@ function loginProcess() {
       }
     },
     error => {
-      alert('로그인 실패');  // 로그인 실패 alert 출력
+      toast.error('로그인 실패');  // 로그인 실패 alert 출력
       console.error('Login error:', error);  // 로그인 에러 로그 출력
     }
   );

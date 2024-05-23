@@ -8,26 +8,30 @@ import ProfileCard from "./components/ProfileCard.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 import { openDaumPostcode } from "@/utils/daumPost.js";
-
+import { useToast } from "vue-toastification";
 const body = document.getElementsByTagName("body")[0];
 
 const store = useStore();
 const user = computed(() => store.getters.getUser);
+console.log('User:', user.value);
+const toast = useToast();
 
 const updateUserProfile = () => {
   updateUser(user.value, 
     () => { // 성공 시 콜백
-      alert("Profile updated successfully.");
+      toast.success("업데이트 성공");
     }, 
     () => { // 실패 시 콜백
-      alert("Failed to update profile.");
+      toast.error("업데이트 실패");
     }
   );
 };
 
 const openAddressSearch = () => {
   openDaumPostcode((data) => {
-    user.value.address = data.address;
+    user.value.address = data.jibunAddress;
+    user.value.dongCode = data.bcode;
+    console.log('Address:', user.value.dongCode, data.bcode);
   });
 };
 
