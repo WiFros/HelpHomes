@@ -67,7 +67,7 @@
 
                 <td class="align-middle text-center">
                   <span class="text-dark text-xs font-weight-bold">
-                    운영자
+                    {{ qna.writer }}
                   </span>
                 </td>
               </tr>
