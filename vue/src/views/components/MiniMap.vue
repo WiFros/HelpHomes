@@ -9,103 +9,94 @@
   </div>
 </template>
 
-<script>
-import { toRaw } from "vue";
+<script setup>
+import { onMounted, reactive, computed, toRaw } from 'vue';
+import { useStore } from 'vuex';
+import { getAptListByDongCode } from '@/api/dealMark.js';
+
 /* global kakao */
 
-export default {
-  props: {
-    aptMarkerList: {
-      type: Array,
-      required: true
-    }
-  },
-  watch: {
-    aptMarkerList: {
-      handler(newVal) {
-        console.log("--- map으로 데이터 도착 ---");
-        console.log("Apt Deal List Updated:", newVal.length);
-        this.initMap();
-      },
-      deep: true
-    }
-  },
-  data() {
-    return {
-      markers: [],
-      infowindow: null,
-    };
-  },
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=47c03223227ed48ea0a77bd2dec0c6cf`;
-      script.onload = () => this.initMap();
-      document.head.appendChild(script);
-    }
-  },
-  methods: {
-    initMap() {
-        console.log("--- initmap ---");
-        console.log("Apt Deal List Updated:", this.aptMarkerList.length);
+const store = useStore();
+const user = computed(() => store.getters.getUser);
 
-      const container = document.getElementById('map');
+const state = reactive({
+  markers: [],
+  infowindow: null,
+  map: null,
+  aptList: [],
+});
 
-      const options = {
-        center: new kakao.maps.LatLng(37.499590490909185, 127.0263723554437),
-        level: 3,
-      };
-      this.map = new kakao.maps.Map(container, options);
+function initMap() {
+  const container = document.getElementById('map');
+  const options = {
+    center: new kakao.maps.LatLng(37.499590490909185, 127.0263723554437),
+    level: 3,
+  };
+  state.map = new kakao.maps.Map(container, options);
 
-      if (this.aptMarkerList.length != 0) {
-        console.log("아파트 존재!")
-        console.log(this.aptMarkerList.length)
-        const markerPositions = this.convertToLatLng(this.aptMarkerList);
-        this.displayMarker(markerPositions);
-      }
+  if (state.aptList.length != 0) {
+    const markerPositions = convertToLatLng(state.aptList);
+    displayMarker(markerPositions);
+  }
+}
 
-    },
-    convertToLatLng(arr) {
-      return arr.map((aptDeal) => [
-        aptDeal.lat,
-        aptDeal.lng,
-      ]);
-    },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
+function convertToLatLng(arr) {
+  return arr.map((aptDeal) => [aptDeal.lat, aptDeal.lng]);
+}
 
-      const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
-      );
+function displayMarker(markerPositions) {
+  if (state.markers.length > 0) {
+    state.markers.forEach((marker) => marker.setMap(null));
+  }
 
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: toRaw(this.map),
-              position,
-            })
-        );
+  const positions = markerPositions.map(
+    (position) => new kakao.maps.LatLng(...position)
+  );
 
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
+  if (positions.length > 0) {
+    state.markers = positions.map(
+      (position) =>
+        new kakao.maps.Marker({
+          map: toRaw(state.map),
+          position,
+        })
+    );
 
-        toRaw(this.map).setBounds(bounds);
-      }
-    },
-    handleButtonClick() {
-      alert('지도 버튼 클릭됨!');
-      // 여기서 추가적인 로직을 구현할 수 있습니다.
-    }
-  },
-};
+    const bounds = positions.reduce(
+      (bounds, latlng) => bounds.extend(latlng),
+      new kakao.maps.LatLngBounds()
+    );
+
+    toRaw(state.map).setBounds(bounds);
+  }
+}
+
+function handleButtonClick() {
+  const userDongCode = user.value.dongCode;
+
+  getAptListByDongCode(userDongCode)
+    .then(response => {
+      console.log("Apt List:", response.data);
+      state.aptList = response.data;
+      const markerPositions = convertToLatLng(state.aptList);
+      displayMarker(markerPositions);
+    })
+    .catch(error => {
+      console.error("Error loading apartments:", error);
+    });
+}
+
+onMounted(() => {
+  if (window.kakao && window.kakao.maps) {
+    initMap();
+  } else {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=47c03223227ed48ea0a77bd2dec0c6cf`;
+    script.onload = () => initMap();
+    document.head.appendChild(script);
+  }
+});
 </script>
 
 <style scoped>

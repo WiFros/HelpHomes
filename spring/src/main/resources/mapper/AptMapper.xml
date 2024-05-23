@@ -60,5 +60,10 @@
     </otherwise>
   </choose>
 </select>
-
+<select id="findAptByDongCode" parameterType="String" resultType="com.apt.vo.Apart">
+	SELECT aptCode, roadName, roadNameSeq, dong, apartmentName, lng, lat
+	FROM houseinfo
+	WHERE dongCode = #{dongCode}
+	LIMIT 100
+</select>
 </mapper>

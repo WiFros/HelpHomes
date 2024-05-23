@@ -21,5 +21,5 @@ public interface AptService {
 	public List<String> getSidoList();
 	public List<String> getGugunList(String sido);
 	public List<String> getDongList(String sido, String gugun);
-
+	List<Apart> findAptByDongCode(String dongCode);
 }

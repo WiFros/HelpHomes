@@ -30,7 +30,11 @@ public class AptRestController {
 	
 	@Autowired
 	AptService service;
-
+	@GetMapping("/by-dong")
+    public ResponseEntity<List<Apart>> getAptByDongCode(@RequestParam String dongCode) {
+        List<Apart> aptList = service.findAptByDongCode(dongCode);
+        return ResponseEntity.ok(aptList);
+    }
 	//전체 조회 
 	@GetMapping("")
 	public ResponseEntity<List<AptDeal>> search(@RequestParam("year") String year, @RequestParam("month") String month) throws SQLException {

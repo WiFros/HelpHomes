@@ -96,4 +96,8 @@ public class AptServiceImpl implements AptService{
         return new ArrayList<>();
     }
 
+	@Override
+    public List<Apart> findAptByDongCode(String dongCode) {
+        return mapper.findAptByDongCode(dongCode);
+    }
 }

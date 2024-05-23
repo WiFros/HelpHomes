@@ -15,5 +15,12 @@ function insert(mark, success, fail) {
 function remove(mark, success, fail) {
   axios.post("/dealMark/delete", mark).then(success).catch(fail);
 }
-
-export { selectAll, insert, remove };
+function getAptListByDongCode(dongCode){
+  console.log("getAptListByDongCode:", dongCode);
+  return axios.get(`/apt/by-dong`,{
+    params: {
+      dongCode
+    }
+  });
+}
+export { selectAll, insert, remove, getAptListByDongCode};

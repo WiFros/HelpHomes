@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <script setup>
-import { computed } from "vue";
+import { computed,onMounted } from "vue";
 import { useStore } from "vuex";
 import Sidenav from "./examples/Sidenav";
 import Configurator from "@/examples/Configurator.vue";
@@ -42,6 +42,34 @@ const navClasses = computed(() => {
     "px-0 mx-4": !isAbsolute.value,
   };
 });
+onMounted(async () => {
+  try {
+    await loadKakaoMapSDK();
+    console.log('Kakao Map SDK loaded successfully');
+  } catch (error) {
+    console.error('Error loading Kakao Map SDK:', error);
+  }
+});
+function loadKakaoMapSDK() {
+  return new Promise((resolve, reject) => {
+    if (window.kakao && window.kakao.maps) {
+      resolve();
+    } else {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=47c03223227ed48ea0a77bd2dec0c6cf&libraries=services`;
+      script.onload = () => {
+        window.kakao.maps.load(() => {
+          resolve();
+        });
+      };
+      script.onerror = () => {
+        reject(new Error('Failed to load Kakao Map SDK'));
+      };
+      document.head.appendChild(script);
+    }
+  });
+}
 </script>
 <template>
   <div
