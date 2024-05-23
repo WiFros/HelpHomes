@@ -50,7 +50,7 @@
           </thead>
           <!-- Table Body -->
           <tbody >
-            <tr v-for="(qna,idx) in qnaList" :key="qna.num">
+            <tr v-for="(qna,idx) in qnaList" :key="qna.num" @click="showQna(qna.num)">
               <td class = "number-column">
                 <div class="d-flex  justify-content-center">
                   <p class="text-cs font-weight-bold mt-3">{{ idx+1 }}</p>
@@ -66,16 +66,11 @@
 
 
               <td class = "number-column">
-                <RouterLink :to="{
-                        name: 'QnaDetail',
-                        params: { num: qna.num }
-                      }">
 
-                  <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center" >
                     <h6 class="mb-0 mx-2 text-cs">{{ qna.title }}
                     </h6>
                   </div>
-              </RouterLink>
               </td>
 
               <td class = "number-column">
@@ -148,6 +143,10 @@ td.number-column {
   max-height: 300px; /* 내용이 표시될 최대 높이 */
   overflow-y: auto; /* 세로 스크롤 추가 */
 }
+tbody tr:hover {
+  background-color: #f0f0f0; /* 회색 배경 */
+  cursor: pointer; /* 커서를 포인터로 변경 */
+}
 
 </style>
 
@@ -159,7 +158,11 @@ import { RouterLink } from 'vue-router';
 const qnaList = ref([]);
 const keyword = ref("");
 const option = ref("");
+const emits = defineEmits(['clickQna']);
 
+function showQna(num) {
+  emits('clickQna',num);
+}
 
 onMounted(() => {
   selectAll(

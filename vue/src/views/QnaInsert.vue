@@ -33,26 +33,28 @@ function qnaInsert() {
 </script>
 
 <template>
-  <div class="about">
+  <div class="mt-4 container-fluid">
 
-    <div class="container">
-      <form id="form1" class="form-horizontal">
-        <h2>Q&A 등록</h2>
+
+      
+  <div class="card">
+      <div class="card-header py-3" >
+        <h3>Q&A 등록</h3>
+      </div>
+
+      <div class="card-body">
         <div class="form-group">
-          <label>작성자:</label> <input type="text" class="form-control" id="writer" v-model="writer" />
-        </div>
-        <div class="form-group">
-          <label>제목:</label> <input type="text" class="form-control" id="title" v-model="title" />
+          <h5>제목:</h5> <input type="text" class="form-control" id="title" v-model="title" />
         </div>
 
         <div class="form-group">
-          <label>내용:</label> <input type="text" class="form-control" id="content" v-model="content" />
+          <h5>내용:</h5> <input type="text" class="form-control" id="content" v-model="content" style=" height: 300px;" />
         </div>
 
         <div class="btn-group btn-center">
           <input type="button" class="btn btn-primary" value="등록" id="btnInsert" @click="qnaInsert" />
         </div>
-      </form>
+        </div>
     </div>
   </div>
 </template>

@@ -1,7 +1,7 @@
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from "vue-router";
+import { ref } from 'vue';
+import {  useRouter } from "vue-router";
 import {selectOne,remove,update} from "@/api/qna.js";
 import QnABoard from './components/QnABoard.vue';
 const num = ref("");
@@ -11,19 +11,13 @@ const wdate = ref("");
 const title = ref("");
 const content = ref("");
 
-const currentRoute = useRoute();
 const router = useRouter();
 
 // 파라미터 받기
-const param = ref(currentRoute.params.num);
-
-const key = param.value;
 const isModify = ref(false);
 
-onMounted(readOne);
-
-function readOne() {
-selectOne(key,response => {
+function readOne(selectNum) {
+selectOne(selectNum,response => {
   const result = response.data.data;
     num.value = result.num;
     title.value = result.title;
@@ -40,7 +34,7 @@ selectOne(key,response => {
 
 
 function qnaDelete() {
-  remove(key,
+  remove(num.value,
     response => {
       if(response.data.code === 200){
         alert("삭제 완료!");
@@ -101,7 +95,7 @@ function enableEditing() {
   <div class ="row mt-4 container-fluid">
 
     <div class="col-lg-7 ">
-      <QnABoard />
+      <QnABoard @clickQna="readOne"/>
     </div>
 
     <div class="col-lg-5 ">
@@ -151,7 +145,7 @@ function enableEditing() {
             </div>
 
             <div class="btn-group">
-                <input type="button" class="btn btn-primary" value="수정 완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
+                <input type="button" class="btn btn-primary" value="수완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
             </div>
           </div>
       </div> 
