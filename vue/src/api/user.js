@@ -34,5 +34,16 @@ function fetchUser(token, success, fail) {
     })
     .catch(fail);
 }
-
-export { login, signup, fetchUser };
+function updateUser(user, success, fail) {
+  axios
+      .put('/api/auth/update', user)
+      .then(response => {
+          const updatedUser = response.data.user;
+          const newToken = response.data.token;
+          store.commit('setUser', updatedUser);
+          store.commit('setToken', newToken);
+          success(response);
+      })
+      .catch(fail);
+}
+export { login, signup, fetchUser, updateUser};

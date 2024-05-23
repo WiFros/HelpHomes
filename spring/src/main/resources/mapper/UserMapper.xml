@@ -10,7 +10,7 @@
 	
 	<update id="update" parameterType="User" >
 		update users set
-		name = #{name}, password = #{password}, email = #{email}, address = #{address}, phone = #{phone}, role = #{role}
+		name = #{name}, email = #{email}, address = #{address}, phone = #{phone}
 		where id = #{id}
 	</update>
 	
