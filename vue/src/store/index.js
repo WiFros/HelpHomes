@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import axios from 'axios';
+import { signup } from '@/api/user';
 
 export default createStore({
   state: {
@@ -80,6 +81,18 @@ export default createStore({
       }).then(response => {
         commit('setUser', response.data);
         return response.data;
+      });
+    },
+    // eslint-disable-next-line no-unused-vars
+    signup({ commit }, signupData) {
+      return new Promise((resolve, reject) => {
+        signup(signupData, response => {
+          console.log('회원가입 성공:', response);
+          resolve(response);
+        }, error => {
+          console.error('회원가입 실패:', error.response.data);
+          reject(error);
+        });
       });
     }
   },

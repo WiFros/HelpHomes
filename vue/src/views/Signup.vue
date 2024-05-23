@@ -56,7 +56,7 @@ function register() {
   // 회원가입 API 호출
   store.dispatch('signup', signupData).then(() => {
     console.log('회원가입 성공');
-    router.push('/login'); // 회원가입 후 로그인 페이지로 이동
+    router.push('/signin'); // 회원가입 후 로그인 페이지로 이동
   }).catch(error => {
     alert('회원가입 실패: ' + error.response.data);
     console.error('회원가입 실패:', error);
