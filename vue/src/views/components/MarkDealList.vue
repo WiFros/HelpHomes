@@ -80,7 +80,7 @@
 import { useStore } from 'vuex';
 
 import { selectAllMarkApart } from '../../api/aptDeal';
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 
 const store = useStore();
 
@@ -90,20 +90,31 @@ const markAptList = ref([]);
 
 onMounted(() => {
   console.log('m');
-  if (user.value.id) {
-    selectAllMarkApart(
-      user.value.id,
-      (response) => {
-        markAptList.value = response.data;
-        console.log('찜한 아파트 불러오기');
-        console.log(markAptList.value);
-      },
-      (err) => {
-        console.log(err);
-      },
-    );
-  }
 });
+
+watch(
+  () => user.value,
+  (newValue) => {
+    if (newValue) {
+      console.log('User value changed:', newValue);
+      selectAllMarkApart(
+        newValue.id,
+        (response) => {
+          markAptList.value = response.data;
+          console.log('찜한 아파트 불러오기');
+          console.log(markAptList.value);
+        },
+        (err) => {
+          console.log(err);
+        },
+      );
+    }
+    else {
+      markAptList.value.length = 0;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
