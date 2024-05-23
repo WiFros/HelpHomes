@@ -97,65 +97,58 @@ function enableEditing() {
 </script>
 
 <template>
-  <div class="about">
-    <div class="container">
-		<form id="form1" class="form-horizontal">
-			<h2>Spring Boot board Management</h2>
+  <div class="card mt-4 mx-4">
+      <div class="card-header pb-3">
+        <h2>Q&A 게시판</h2>
+      </div>
 
-			<div class="form-group">
-				<label>번호:</label> 
-				<input type="text" class="form-control" id="num" v-model="num" readonly> 
-			</div>
+      <div class="col card-body pt-0">
+        <div class="form-group">
+          <label>번호:</label> 
+          <input type="text" class="form-control" id="num" v-model="num" readonly> 
+        </div>
 
-      <div class="form-group">
-				<label>글쓴이:</label> 
-				<input type="text" class="form-control" id="writer" v-model="writer" readonly> 
-			</div>
+        <div class="form-group">
+          <label>글쓴이:</label> 
+          <input type="text" class="form-control" id="writer" v-model="writer" readonly> 
+        </div>
 
-      <div class="form-group">
-				<label>날짜:</label> 
-				<input type="text" class="form-control" id="wdate" v-model="wdate" readonly> 
-			</div>
+        <div class="form-group">
+          <label>날짜:</label> 
+          <input type="text" class="form-control" id="wdate" v-model="wdate" readonly> 
+        </div>
 
-      <div class="form-group">
-				<label>조회수:</label> 
-				<input type="text" class="form-control" id="count" v-model="count" readonly> 
-			</div>
+        <div class="form-group">
+          <label>조회수:</label> 
+          <input type="text" class="form-control" id="count" v-model="count" readonly> 
+        </div>
 
-			<div class="form-group">
-				<label>제목:</label> 
-				<input type="text" class="form-control" id="title" v-model="title" readonly>
-			</div>
+        <div class="form-group">
+          <label>제목:</label> 
+          <input type="text" class="form-control" id="title" v-model="title" readonly>
+        </div>
 
-			<div class="form-group">
-    <label for="content">글 내용:</label>
-    <textarea class="form-control" id="content" v-model="content" style=" height: 200px;" readonly></textarea>
-  </div>
+        <div class="form-group">
+          <label for="content">글 내용:</label>
+          <textarea class="form-control" id="content" v-model="content" style=" height: 200px;" readonly></textarea>
+        </div>
 
-  <div class="container">
-    <div class="btn-group" style="margin-right: 10px;">
-        <input type="button" class="btn btn-primary" value="삭제" id="btnDelete" @click="qnaDelete()" /> 
-    </div>
-    <div class="btn-group"  style="margin-right: 10px;">
-        <input type="button" class="btn btn-primary" value="수정" id="btnUpdate" @click="enableEditing()" /> 
-    </div>
+          <div class="btn-group">
+              <input type="button" class="btn btn-danger" value="삭제" id="btnDelete" @click="qnaDelete()" /> 
+          </div>
 
-    <div class="btn-group">
-        <input type="button" class="btn btn-primary" value="수정 완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
-    </div>
-</div>
+          <div class="btn-group mx-3">
+              <input type="button" class="btn btn-primary" value="수정 하기" id="btnUpdate" @click="enableEditing()" /> 
+          </div>
 
-		</form>
-	</div>
+          <div class="btn-group">
+              <input type="button" class="btn btn-primary" value="수정 완료" id="btnUpdateComplete" @click="qnaUpdate()" style="display: none;" /> 
+          </div>
+
+      </div>
+
   </div>
 </template>
 
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
 </style>
