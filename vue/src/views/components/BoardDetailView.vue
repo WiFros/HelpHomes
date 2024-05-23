@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { selectOne,remove,update } from "@/api/board.js";
-
+import { useToast } from "vue-toastification";
 let num = ref("");
 let name = ref("");
 let pass = ref("");
@@ -13,6 +13,7 @@ let content = ref("");
 
 const currentRoute = useRoute();//경로정보
 const router = useRouter();//라우터 
+const toast = useToast();//알림창
 
 const key = currentRoute.params.num;//변경해서 사용할 값 아니므로 그냥 쓰자!
 
@@ -41,7 +42,7 @@ function deletePost() {
     remove(
       key,
       () => {
-        alert("삭제되었습니다.");
+        toast.success("삭제되었습니다.");
         router.push({ name: "BoardList" });
       },
       (error) => {

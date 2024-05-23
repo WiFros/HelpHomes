@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeUnmount, onBeforeMount } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from 'vue-router'; // 추가된 부분
+import { useRouter } from "vue-router"; // 추가된 부분
 
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
@@ -38,12 +38,12 @@ const phone = ref("");
 const dongCode = ref("");
 function handleAddressClick() {
   new daum.Postcode({
-    oncomplete: function(data) {
-      console.log('Address data:', data);
+    oncomplete: function (data) {
+      console.log("Address data:", data);
       address.value = data.jibunAddress;
       dongCode.value = data.bcode;
-      console.log('Address:', dongCode.value, address.value);
-    }
+      console.log("Address:", dongCode.value, address.value);
+    },
   }).open();
 }
 
@@ -54,23 +54,24 @@ function register() {
     password: password.value,
     address: address.value,
     phone: phone.value,
-    dongCode: dongCode.value
+    dongCode: dongCode.value,
   };
 
-  console.log('Signup data:', signupData); // 회원가입 데이터 로그 출력
+  console.log("Signup data:", signupData); // 회원가입 데이터 로그 출력
 
   // 회원가입 API 호출
-  store.dispatch('signup', signupData).then(() => {
-    console.log('회원가입 성공');
-    toast.success('회원가입 성공');
-    router.push('/signin'); // 회원가입 후 로그인 페이지로 이동
-  }).catch(error => {
-    alert('회원가입 실패: ' + error.response.data);
-    toast.error('회원가입 실패');
-    console.error('회원가입 실패:', error);
-  });
+  store
+    .dispatch("signup", signupData)
+    .then(() => {
+      console.log("회원가입 성공");
+      toast.success("회원가입 성공");
+      router.push("/signin"); // 회원가입 후 로그인 페이지로 이동
+    })
+    .catch((error) => {
+      toast.error("회원가입 실패");
+      console.error("회원가입 실패:", error);
+    });
 }
-
 </script>
 <template>
   <div class="container top-0 position-sticky z-index-sticky">
@@ -94,7 +95,7 @@ function register() {
           <div class="col-lg-5 text-center mx-auto">
             <h1 class="text-white mb-2 mt-5">안녕하세요!</h1>
             <p class="text-lead text-white">
-              도와줘 홈즈에 오신 것을 환영합니다. 
+              Help Homes! 에 오신 것을 환영합니다.
             </p>
           </div>
         </div>
@@ -110,55 +111,60 @@ function register() {
             <div class="card-body">
               <form role="form" @submit.prevent="register">
                 <argon-input
-                  v-model="name"
                   id="name"
-                  type="text"
-                  placeholder="이름"
+                  v-model="name"
                   aria-label="Name"
+                  placeholder="이름"
+                  type="text"
                 />
                 <argon-input
-                  v-model="email"
                   id="email"
-                  type="email"
-                  placeholder="이메일"
+                  v-model="email"
                   aria-label="Email"
+                  placeholder="이메일"
+                  type="email"
                 />
                 <argon-input
-                  v-model="password"
                   id="password"
-                  type="password"
-                  placeholder="비밀번호"
+                  v-model="password"
                   aria-label="Password"
+                  placeholder="비밀번호"
+                  type="password"
                 />
                 <input
-                  class="form-control"
-                  v-model="address"
                   id="address"
-                  type="text"
-                  placeholder="주소"
+                  v-model="address"
                   aria-label="Address"
+                  class="form-control"
+                  placeholder="주소"
                   readonly
+                  type="text"
                   @click="handleAddressClick"
                 />
                 <argon-input
-                  v-model="phone"
                   id="phone"
-                  type="text"
-                  placeholder="번호"
+                  v-model="phone"
                   aria-label="Phone"
+                  placeholder="번호"
+                  type="text"
                 />
                 <div class="text-center">
                   <argon-button
-                    fullWidth
-                    color="dark"
-                    variant="gradient"
                     class="my-4 mb-2"
+                    color="dark"
+                    fullWidth
                     type="submit"
-                  >가입</argon-button>
+                    variant="gradient"
+                    >가입</argon-button
+                  >
                 </div>
                 <p class="text-sm mt-3 mb-0">
                   이미 계정이 있으신가요?
-                  <router-link to="/signin" class="text-success text-gradient font-weight-bold">로그인</router-link>
+                  <router-link
+                    class="text-success text-gradient font-weight-bold"
+                    to="/signin"
+                    >로그인</router-link
+                  >
                 </p>
               </form>
             </div>
@@ -170,7 +176,7 @@ function register() {
   <app-footer />
 </template>
 <style>
-  #address {
-    margin-bottom: 1rem;
-  }
+#address {
+  margin-bottom: 1rem;
+}
 </style>

@@ -4,8 +4,8 @@
       <div class="col-12">
         <navbar
           isBlur="blur  border-radius-lg my-3 py-2 start-0 end-0 mx-4 shadow"
-          v-bind:darkMode="true"
           isBtn="bg-gradient-success"
+          v-bind:darkMode="true"
         />
       </div>
     </div>
@@ -15,7 +15,9 @@
       <div class="page-header min-vh-100">
         <div class="container">
           <div class="row">
-            <div class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0">
+            <div
+              class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0"
+            >
               <div class="card card-plain">
                 <div class="pb-0 card-header text-start">
                   <h4 class="font-weight-bolder">로그인</h4>
@@ -25,31 +27,33 @@
                   <div class="mb-3">
                     <argon-input
                       id="email"
-                      type="email"
-                      placeholder="Email"
-                      name="email"
-                      size="lg"
                       v-model="email"
+                      name="email"
+                      placeholder="Email"
+                      size="lg"
+                      type="email"
                     />
                   </div>
                   <div class="mb-3">
                     <argon-input
                       id="password"
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                      size="lg"
                       v-model="password"
+                      name="password"
+                      placeholder="Password"
+                      size="lg"
+                      type="password"
                     />
                   </div>
-                  <argon-switch id="rememberMe" name="remember-me">이메일 저장</argon-switch>
+                  <argon-switch id="rememberMe" name="remember-me"
+                    >이메일 저장</argon-switch
+                  >
                   <div class="text-center">
                     <argon-button
                       class="mt-4"
-                      variant="gradient"
                       color="success"
                       fullWidth
                       size="lg"
+                      variant="gradient"
                       @click="loginProcess"
                     >
                       로그인
@@ -59,7 +63,11 @@
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     계정이 없으신가요?
-                    <router-link to="/signup" class="text-success text-gradient font-weight-bold">회원가입</router-link>
+                    <router-link
+                      class="text-success text-gradient font-weight-bold"
+                      to="/signup"
+                      >회원가입</router-link
+                    >
                   </p>
                 </div>
               </div>
@@ -75,11 +83,14 @@
                 "
               >
                 <span class="mask bg-gradient-success opacity-6"></span>
-                <h4 class="mt-5 text-white font-weight-bolder position-relative">
-                  도와줘 홈즈
+                <h4
+                  class="mt-5 text-white font-weight-bolder position-relative"
+                >
+                  Help Homes!
                 </h4>
                 <p class="text-white position-relative">
-                  새로운 집을 찾거나 내 집을 팔고 싶다면 도와줘 홈즈를 통해 부동산 자산을 관리 할 수 있습니다.
+                  새로운 집을 찾거나 내 집을 팔고 싶다면 Help Homes 를 통해
+                  부동산 자산을 관리 할 수 있습니다.
                 </p>
               </div>
             </div>
@@ -112,45 +123,43 @@ const router = useRouter();
 function loginProcess() {
   const login_user = {
     email: email.value,
-    password: password.value
+    password: password.value,
   };
-  console.log('Login attempt with:', login_user);  // 로그인 시도 로그 출력
+  console.log("Login attempt with:", login_user); // 로그인 시도 로그 출력
 
   login(
     login_user,
-    response => {
-      console.log('Login response:', response.data);  // 로그인 응답 로그 출력
-      
+    (response) => {
+      console.log("Login response:", response.data); // 로그인 응답 로그 출력
+
       const token = response.data;
       if (token) {
-        console.log('Token stored in localStorage:', token);  // 저장된 토큰 로그 출력
+        console.log("Token stored in localStorage:", token); // 저장된 토큰 로그 출력
 
-        store.dispatch('login', { token }).then(() => {
-          return store.dispatch('fetchUser', token);
-        }).then(() => {
-          toast.success('로그인 성공');
-          router.push('/dashboard-default');  // 로그인 후 이동
-        }).catch(error => {
-          console.error('Error fetching user:', error);
-          alert('사용자 정보를 가져오는 데 실패했습니다.');
-        });
+        store
+          .dispatch("login", { token })
+          .then(() => {
+            return store.dispatch("fetchUser", token);
+          })
+          .then(() => {
+            toast.success("로그인 성공");
+            router.push("/dashboard-default"); // 로그인 후 이동
+          })
+          .catch((error) => {
+            console.error("Error fetching user:", error);
+            toast.error("사용자 정보를 가져오는 중에 오류가 발생했습니다.");
+          });
       } else {
-        console.error('Invalid token received from server');
-        alert('Invalid token received from server');  // 토큰이 없는 경우 에러 로그 alert 로 출력
+        console.error("Invalid token received from server");
+        toast.error("서버에서 유효하지 않은 토큰을 받았습니다.");
       }
     },
-    error => {
-      toast.error('로그인 실패');  // 로그인 실패 alert 출력
-      console.error('Login error:', error);  // 로그인 에러 로그 출력
-    }
+    (error) => {
+      toast.error("로그인 실패"); // 로그인 실패 alert 출력
+      console.error("Login error:", error); // 로그인 에러 로그 출력
+    },
   );
 }
-
-
-
-
-
-
 
 const body = document.getElementsByTagName("body")[0];
 
