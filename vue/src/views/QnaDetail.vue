@@ -45,9 +45,9 @@ function qnaDelete() {
     key,
     (response) => {
       if (response.data.code === 200) {
-        toast().success("삭제 완료!");
+        toast.success("삭제 완료!");
       } else {
-        toast().error("오류 발생!");
+        toast.error("오류 발생!");
       }
 
       router.push({ name: "Qna" });
@@ -69,9 +69,9 @@ function qnaUpdate() {
     update_qna,
     (response) => {
       if (response.data.code === 200) {
-        toast().success("수정 완료!");
+        toast.success("수정 완료!");
       } else {
-        toast().error("오류 발생!");
+        toast.error("오류 발생!");
       }
 
       router.push({ name: "Qna" });
