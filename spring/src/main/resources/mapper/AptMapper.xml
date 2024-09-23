@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.apt.mapper.AptMapper">
+
+	<select id="search" parameterType="java.util.Map" resultType="AptDeal">
+		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode
+		from housedeal d
+		where d.dealYear = #{year} and d.dealMonth = #{month}
+	</select>
+		
+	<select id="dongSearch" parameterType="java.util.Map" resultType="AptDeal">
+		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode, h.apartmentName as aptName,h.lng,h.lat,h.aptCode,h.roadName,h.roadNameSeq
+		from housedeal d join houseinfo h
+		on d.aptCode = h.aptCode
+		where d.dealYear = #{year} and d.dealMonth = #{month} and h.dong = #{dongName};
+	</select>
+	
+	<select id="aptSearch" parameterType="java.util.Map" resultType="AptDeal">
+		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode, h.apartmentName as aptName,h.lng,h.lat,h.aptCode
+		from housedeal d join houseinfo h
+		on d.aptCode = h.aptCode
+		where d.dealYear = #{year} and d.dealMonth = #{month} and h.apartmentName = #{aptName};
+	</select>
+
+	<select id="markAptSearch" parameterType="string" resultType="Apart">
+		SELECT *
+		FROM houseinfo h
+		WHERE h.aptCode IN(
+		select aptCode
+		from dealMark
+		where userId = #{userId});
+	</select>
+		
+<!-- <select id="aptFloorSearch" parameterType="java.util.Map" resultType="AptDeal">
+		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode, h.apartmentName as aptName,h.lng,h.lat,h.aptCode
+      FROM housedeal d 
+      JOIN houseinfo h ON d.aptCode = h.aptCode
+      WHERE h.aptCode = #{aptCode}
+</select> -->
+
+<!-- 층과 aptcode를 모두 이용해 검색하는 쿼리 (층별 검색 가능)-->
+<select id="aptFloorSearch" parameterType="java.util.Map" resultType="AptDeal">
+  <choose>
+
+    <when test="floor != null">
+		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode, h.apartmentName as aptName,h.lng,h.lat,h.aptCode
+      FROM housedeal d 
+      JOIN houseinfo h ON d.aptCode = h.aptCode
+      WHERE d.floor = #{floor} AND h.aptCode = #{aptCode}
+    </when>
+
+    <otherwise>
+		select d.no, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.cancelDealType, d.aptCode, h.apartmentName as aptName,h.lng,h.lat,h.aptCode
+      FROM housedeal d 
+      JOIN houseinfo h ON d.aptCode = h.aptCode
+      WHERE h.aptCode = #{aptCode}
+    ORDER BY d.dealYear, d.dealMonth, d.dealDay
+    </otherwise>
+  </choose>
+</select>
+<select id="findAptByDongCode" parameterType="String" resultType="com.apt.vo.Apart">
+	SELECT aptCode, roadName, roadNameSeq, dong, apartmentName, lng, lat
+	FROM houseinfo
+	WHERE dongCode = #{dongCode}
+	LIMIT 100
+</select>
+</mapper>

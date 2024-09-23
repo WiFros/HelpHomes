@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.info.mapper.PollutionMapper">
+
+	<resultMap type="Pollution" id="naming">
+		<result column="pollYear" property="year"/>
+		<result column="pollMonth" property="month"/>
+		<result column="pollDay" property="day"/>
+	</resultMap>
+
+	<select id="findByDongCode" parameterType="String" resultMap="naming">
+		SELECT *
+		FROM pollutions
+		WHERE dongCode = #{guCode}
+		order by pollYear desc, pollMonth desc, pollDay desc
+	</select>
+		
+	<select id="findByDongName" parameterType="String" resultMap="naming">
+		SELECT *
+		FROM pollutions
+		WHERE guName = #{guCode}
+		order by pollYear desc, pollMonth desc, pollDay desc
+	</select>
+
+
+	
+</mapper>

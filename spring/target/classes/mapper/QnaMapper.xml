@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qna.mapper.QnaMapper">
+
+	<insert id="insert" parameterType="Qna">
+		insert into qna (writer, wdate, title, content, count, status,writerId)
+		values (#{writer}, now(), #{title}, #{content}, 0, "처리중",#{writerId})
+	</insert>
+
+	<select id="selectAll" parameterType="map" resultType="Qna">
+		select *
+		from qna
+		order by num desc
+	</select>
+		
+	<select id="selectOne" parameterType="int" resultType="Qna">
+		select *
+		from qna
+		where num = #{num}
+	</select>
+	
+	<update id="countUp" parameterType="int">
+		update qna
+		set count = count + 1
+		where num = #{n}
+	</update>
+	
+	<update id="modify" parameterType="qna">
+		update qna
+		set title = #{title}, content = #{content}
+		where num = #{num}
+	</update>
+	
+	<update id="answer" parameterType="qna">
+		update qna
+		set status = "답변완료", answer = #{answer} , adate=now()
+		where num = #{num}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from qna
+		where num = #{num}
+	</delete>
+	
+	<select id="search" parameterType="java.util.Map" resultType="Qna">
+		select * from qna
+		<where>
+			<choose>
+				<when test="condition !=  null and condition == 'name'">
+					writer = #{word}
+				</when>
+				<when test="condition !=  null and condition == 'title'">
+					title like CONCAT('%', #{word},'%')
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+</mapper>

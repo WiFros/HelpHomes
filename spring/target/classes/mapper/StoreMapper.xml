@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.info.mapper.StoreMapper">
+
+	<resultMap type="Store" id="naming">
+		<result column="storeName" property="name"/>
+	</resultMap>
+	
+	<resultMap type="StoreCategory" id="cate">
+		<result column="categoryName" property="category"/>
+		<result column="cnt" property="count"/>
+	</resultMap>
+
+	<select id="findByDongCode" parameterType="Map" resultMap="naming">
+		SELECT *
+		FROM stores
+		WHERE dongCode = #{dongCode}
+		<choose>
+			<when test="pageSize==null">limit 30</when>
+			<otherwise>limit #{pageSize}</otherwise>
+		</choose>
+		<choose>
+			<when test="offset==null">offset 0</when>
+			<otherwise>offset #{offset}</otherwise>
+		</choose>		
+	</select>
+	
+	<select id="getCateListByDongCode" parameterType="String" resultMap="cate">
+		SELECT categoryName, count(*) as cnt
+		FROM stores
+		where dongCode = #{dongCode}
+		group by categoryName;
+	</select>
+
+	
+</mapper>

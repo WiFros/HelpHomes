@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dealMark.mapper.DealMarkMapper">
+
+	<insert id="insert" parameterType="DealMark">
+		insert into dealMark(userId,aptCode)
+		values(#{userId},#{aptCode});
+	</insert>
+
+	<select id="selectAll" parameterType="string" resultType="long">
+		select aptCode
+		from dealMark
+		where userId = #{userId}
+	</select>
+
+	<delete id="delete" parameterType="DealMark">
+		delete from dealMark
+		where userId = #{userId} and aptCode = #{aptCode}
+	</delete>
+<!-- 	
+	<update id="countUp" parameterType="int">
+		update qna
+		set count = count + 1
+		where num = #{n}
+	</update>
+	
+	<update id="modify" parameterType="qna">
+		update qna
+		set title = #{title}, content = #{content}
+		where num = #{num}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from qna
+		where num = #{num}
+	</delete>
+	
+	<select id="search" parameterType="java.util.Map" resultType="Qna">
+		select * from qna
+		<where>
+			<choose>
+				<when test="condition !=  null and condition == 'name'">
+					writer = #{word}
+				</when>
+				<when test="condition !=  null and condition == 'title'">
+					title like CONCAT('%', #{word},'%')
+				</when>
+			</choose>
+		</where>
+	</select> -->
+	
+</mapper>
