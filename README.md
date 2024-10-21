@@ -21,7 +21,7 @@ HelpHomes는 부동산 공공 데이터를 이용하여 사용자가 부동산 �
 
 1. 저장소 클론:
     ```bash
-    git clone https://github.com/your-username/helphomes.git
+    git clone https://github.com/WiFros/helphomes.git
     ```
 2. 프로젝트 디렉터리로 이동:
     ```bash
@@ -29,7 +29,7 @@ HelpHomes는 부동산 공공 데이터를 이용하여 사용자가 부동산 �
     ```
 3. 프론트엔드 종속성 설치:
     ```bash
-    cd frontend
+    cd vue
     npm install
     ```
 4. Vue.js 프론트엔드 실행:
@@ -37,7 +37,7 @@ HelpHomes는 부동산 공공 데이터를 이용하여 사용자가 부동산 �
     npm run serve
     ```
 5. 백엔드 실행:
-    - `backend` 디렉터리로 이동합니다.
+    - `spring` 디렉터리로 이동합니다.
     - Spring Boot 서버를 설정하고 데이터베이스 연결을 환경에 맞게 구성합니다.
     - 서버 실행:
     ```bash
@@ -45,7 +45,7 @@ HelpHomes는 부동산 공공 데이터를 이용하여 사용자가 부동산 �
     ```
 
 ## 사용 방법
-프론트엔드 및 백엔드 서버가 실행된 후, 브라우저에서 `http://localhost:8080` (또는 설정한 주소)로 접속하여 HelpHomes 플랫폼을 이용할 수 있습니다.
+프론트엔드 및 백엔드 서버가 실행된 후, 브라우저에서 `http://localhost:3000` (또는 설정한 주소)로 접속하여 HelpHomes 플랫폼을 이용할 수 있습니다.
 
 ## 라이선스
 이 프로젝트는 MIT 라이선스 하에 제공됩니다. 자세한 사항은 LICENSE 파일을 참고하세요.
