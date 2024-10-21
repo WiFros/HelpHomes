@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# S1114_SPRING_HOME_Kimsanghyun_Shinhyejin_TakDaeyeol
-
 # 요구사항 목록
 
 - 회원 정보 관리
